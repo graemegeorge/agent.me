@@ -1,16 +1,16 @@
 @import "tailwindcss";
 
 :root {
-  --color-bg: #f8fafc;
+  --color-bg: #f3f7ff;
   --color-surface: #ffffff;
-  --color-surface-hover: #f1f5f9;
-  --color-surface-strong: #e2e8f0;
-  --color-text: #0f172a;
-  --color-muted: #475569;
-  --color-border: #cbd5e1;
-  --glass-bg: rgba(255, 255, 255, 0.72);
-  --glass-border: rgba(148, 163, 184, 0.45);
-  --gradient-overlay: rgba(248, 250, 252, 0.9);
+  --color-surface-hover: #eef4ff;
+  --color-surface-strong: #dde8f8;
+  --color-text: #0b1324;
+  --color-muted: #52617d;
+  --color-border: #c6d4e8;
+  --glass-bg: rgba(255, 255, 255, 0.82);
+  --glass-border: rgba(139, 162, 196, 0.42);
+  --gradient-overlay: rgba(243, 247, 255, 0.9);
 }
 
 .dark {
@@ -44,6 +44,7 @@
 body {
   color: var(--color-text);
   background: var(--color-bg);
+  transition: background-color 200ms ease, color 200ms ease;
 }
 
 @utility text-balance {

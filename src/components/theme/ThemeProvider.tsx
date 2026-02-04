@@ -13,9 +13,17 @@ interface ThemeContextValue {
 const ThemeContext = createContext<ThemeContextValue | null>(null)
 
 function applyTheme(theme: ThemeMode): 'light' | 'dark' {
+  const root = document.documentElement
   const resolvedTheme = theme === 'system' ? getSystemTheme() : theme
-  document.documentElement.classList.toggle('dark', resolvedTheme === 'dark')
-  document.documentElement.dataset.theme = resolvedTheme
+  root.classList.remove('light', 'dark')
+
+  if (theme === 'light') {
+    root.classList.add('light')
+  } else if (theme === 'dark') {
+    root.classList.add('dark')
+  }
+
+  root.dataset.theme = resolvedTheme
   return resolvedTheme
 }
 
