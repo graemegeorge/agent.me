@@ -9,7 +9,7 @@ export default function SignInPage() {
       <div className="max-w-md w-full mx-4">
         <div className="text-center mb-8">
           <Link href="/" className="inline-block text-3xl font-bold brand-logo mb-4">
-            agent.me
+            agent-me.app
           </Link>
           <h1 className="text-2xl font-bold text-white mb-2">Sign in to continue</h1>
           <p className="text-gray-400">Connect your accounts to enrich your AI agent profile</p>

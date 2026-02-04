@@ -60,7 +60,7 @@ export default function Home() {
                       backgroundClip: 'text'
                     }}
                   >
-                    agent.me
+                    agent-me.app
                   </span>
                 </div>
               </div>
@@ -368,16 +368,16 @@ export default function Home() {
                 backgroundClip: 'text'
               }}
             >
-              agent.me
+              agent-me.app
             </span>
             <p className="text-gray-500 text-sm">
               Built with privacy in mind. Your data stays yours.
             </p>
             <a
-              href="https://github.com/graemegeorge/agent.me"
+              href="https://github.com/graemegeorge/agent-me.app"
               target="_blank"
               rel="noreferrer"
-              aria-label="View the agent.me repository on GitHub"
+              aria-label="View the agent-me.app repository on GitHub"
               className="text-gray-400 hover:text-white transition-colors"
             >
               <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">

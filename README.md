@@ -1,14 +1,14 @@
-# 🤖 agent.me - Create Your AI Twin
+# 🤖 agent-me.app - Create Your AI Twin
 
 ## ✨ What is this?
 
-agent.me is a web application that generates a personalized AI agent based on your unique personality, communication style, and work patterns. Instead of using generic AI assistants, you can create one that actually thinks and responds like you.
+agent-me.app is a web application that generates a personalized AI agent based on your unique personality, communication style, and work patterns. Instead of using generic AI assistants, you can create one that actually thinks and responds like you.
 
 ## 🤔 Why would you use it?
 
 **The problem:** AI assistants are generic. They don't know how you communicate, what you're an expert in, or how you approach problems. You end up re-explaining context every conversation.
 
-**The solution:** agent.me analyzes how you actually communicate and creates a custom AI persona that mirrors your style. Use it to:
+**The solution:** agent-me.app analyzes how you actually communicate and creates a custom AI persona that mirrors your style. Use it to:
 
 - 📝 **Delegate tasks** to an AI that writes like you
 - 👥 **Create a digital twin** for async communication
@@ -40,8 +40,8 @@ All analysis happens in the browser. We never store or transmit your conversatio
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/graemegeorge/agent.me.git
-cd agent.me
+git clone https://github.com/graemegeorge/agent-me.app.git
+cd agent-me.app
 ```
 
 2. Install dependencies:

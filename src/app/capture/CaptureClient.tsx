@@ -41,7 +41,7 @@ export default function CaptureClient({ name, email, image, provider }: CaptureC
       <header className="border-b border-gray-800">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
           <Link href="/" className="text-2xl font-bold brand-logo">
-            agent.me
+            agent-me.app
           </Link>
           <Link href="/analyze" className="text-gray-400 hover:text-white transition-colors">
             Upload export instead →

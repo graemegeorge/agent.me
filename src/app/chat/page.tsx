@@ -142,7 +142,7 @@ export default function ChatPage() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <Link href="/" className="text-2xl font-bold brand-logo">
-                agent.me
+                agent-me.app
               </Link>
               <span className="text-gray-600">|</span>
               <span className="text-gray-400">Chat with Your Agent</span>

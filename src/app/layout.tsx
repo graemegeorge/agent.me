@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'agent.me - Create Your AI Twin',
+  title: 'agent-me.app - Create Your AI Twin',
   description: 'Generate a personalized AI agent based on your personality, work style, and communication patterns.',
 }
 
