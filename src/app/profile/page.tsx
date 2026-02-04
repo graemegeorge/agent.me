@@ -7,6 +7,21 @@ import { AgentProfile } from '@/types'
 import { generateAgentMd, generateSkillsMd, generateSystemPromptMd } from '@/lib/generator'
 import JSZip from 'jszip'
 import { ThemeToggle } from '@/components/theme/ThemeToggle'
+import {
+  Bot,
+  Brain,
+  Briefcase,
+  ClipboardCopy,
+  Download,
+  FileCode,
+  FileJson,
+  Gauge,
+  MessageCircle,
+  Palette,
+  Sparkles,
+  Target,
+  Wrench,
+} from 'lucide-react'
 
 export default function ProfilePage() {
   const router = useRouter()
@@ -103,22 +118,22 @@ export default function ProfilePage() {
   }
 
   const personalityTraits = [
-    { label: 'Communication', value: profile.personality.communicationStyle, icon: '💬' },
-    { label: 'Verbosity', value: profile.personality.verbosity, icon: '📝' },
-    { label: 'Tone', value: profile.personality.tone, icon: '🎭' },
-    { label: 'Decision Making', value: profile.personality.decisionMaking, icon: '🧠' },
+    { label: 'Communication', value: profile.personality.communicationStyle, icon: MessageCircle },
+    { label: 'Verbosity', value: profile.personality.verbosity, icon: Gauge },
+    { label: 'Tone', value: profile.personality.tone, icon: Palette },
+    { label: 'Decision Making', value: profile.personality.decisionMaking, icon: Brain },
   ]
 
   const workTraits = [
-    { label: 'Problem Solving', value: profile.workStyle.problemSolvingApproach, icon: '🔧' },
-    { label: 'Learning Style', value: profile.workStyle.learningStyle, icon: '📚' },
+    { label: 'Problem Solving', value: profile.workStyle.problemSolvingApproach, icon: Wrench },
+    { label: 'Learning Style', value: profile.workStyle.learningStyle, icon: Sparkles },
   ]
 
   const files = [
-    { name: 'AGENT.md', description: 'Your agent persona and profile', icon: '🤖', action: downloadAgentMd },
-    { name: 'SKILLS.md', description: 'Capabilities and expertise', icon: '⚡', action: downloadSkillsMd },
-    { name: 'SYSTEM_PROMPT.md', description: 'Ready-to-use AI prompt', icon: '📋', action: downloadSystemPromptMd },
-    { name: 'profile.json', description: 'Raw profile data', icon: '📊', action: downloadProfileJson },
+    { name: 'AGENT.md', description: 'Your agent persona and profile', icon: Bot, action: downloadAgentMd },
+    { name: 'SKILLS.md', description: 'Capabilities and expertise', icon: Sparkles, action: downloadSkillsMd },
+    { name: 'SYSTEM_PROMPT.md', description: 'Ready-to-use AI prompt', icon: FileCode, action: downloadSystemPromptMd },
+    { name: 'profile.json', description: 'Raw profile data', icon: FileJson, action: downloadProfileJson },
   ]
 
   const tabPanelId = (tab: 'overview' | 'personality' | 'files') => `${tab}-panel`
@@ -133,18 +148,20 @@ export default function ProfilePage() {
             <Link href="/" className="text-2xl font-bold brand-logo">
               agent-me.app
             </Link>
-            <nav aria-label="Profile actions" className="flex gap-3 items-center">
+            <nav aria-label="Profile actions" className="flex gap-2 md:gap-3 items-center">
               <Link
                 href="/chat"
-                className="px-4 py-2 bg-gradient-to-r from-primary-500 to-accent-500 text-white rounded-lg font-semibold hover:from-primary-600 hover:to-accent-600 transition-all flex items-center gap-2"
+                className="px-3 py-2 md:px-4 bg-gradient-to-r from-primary-500 to-accent-500 text-white rounded-lg font-semibold hover:from-primary-600 hover:to-accent-600 transition-all flex items-center gap-2 text-sm md:text-base"
               >
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                 </svg>
-                Chat with Agent
+                <span className="hidden sm:inline">Chat with Agent</span>
+                <span className="sm:hidden">Chat</span>
               </Link>
-              <Link href="/" className="px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-700 transition-colors">
-                Create New
+              <Link href="/" className="px-3 py-2 md:px-4 bg-gray-800 text-white rounded-lg hover:bg-gray-700 transition-colors text-sm md:text-base">
+                <span className="hidden sm:inline">Create New</span>
+                <span className="sm:hidden">New</span>
               </Link>
               <ThemeToggle />
             </nav>
@@ -152,17 +169,17 @@ export default function ProfilePage() {
         </div>
       </header>
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
         {/* Profile Header */}
         <div className="text-center mb-8">
-          <div className="relative inline-block mb-6">
+          <div className="relative inline-block mb-5 md:mb-6">
             <div className="absolute inset-0 bg-gradient-to-r from-primary-500 to-accent-500 rounded-full blur-lg opacity-50" />
-            <div className="relative w-24 h-24 bg-gradient-to-r from-primary-500 to-accent-500 rounded-full flex items-center justify-center">
-              <span className="text-4xl">🤖</span>
+            <div className="relative w-20 h-20 md:w-24 md:h-24 bg-gradient-to-r from-primary-500 to-accent-500 rounded-full flex items-center justify-center">
+              <Bot className="w-10 h-10 text-white" />
             </div>
           </div>
-          <h1 className="text-4xl font-bold mb-2">
-            <span className="bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
+          <h1 className="text-3xl md:text-4xl font-bold mb-2">
+            <span className="text-gradient-heading">
               Your AI Agent is Ready!
             </span>
           </h1>
@@ -173,12 +190,12 @@ export default function ProfilePage() {
         </div>
 
         {/* Quick Actions */}
-        <div className="flex flex-wrap justify-center gap-4 mb-12">
+        <div className="flex flex-wrap justify-center gap-3 md:gap-4 mb-10 md:mb-12">
           <Link
             href="/chat"
-            className="flex items-center gap-3 px-6 py-4 bg-gradient-to-r from-primary-500/20 to-accent-500/20 border border-primary-500/30 rounded-xl hover:from-primary-500/30 hover:to-accent-500/30 transition-all"
+            className="flex items-center gap-3 px-4 py-3 md:px-6 md:py-4 bg-gradient-to-r from-primary-500/20 to-accent-500/20 border border-primary-500/30 rounded-xl hover:from-primary-500/30 hover:to-accent-500/30 transition-all"
           >
-            <span className="text-2xl">💬</span>
+            <MessageCircle className="h-5 w-5 text-primary-300" />
             <div className="text-left">
               <p className="text-white font-semibold">Chat with Your Agent</p>
               <p className="text-gray-400 text-sm">Test your AI twin in real-time</p>
@@ -187,9 +204,9 @@ export default function ProfilePage() {
 
           <button
             onClick={downloadAllAsZip}
-            className="flex items-center gap-3 px-6 py-4 bg-gray-800/50 border border-gray-700 rounded-xl hover:bg-gray-800 transition-all"
+            className="flex items-center gap-3 px-4 py-3 md:px-6 md:py-4 bg-gray-800/50 border border-gray-700 rounded-xl hover:bg-gray-800 transition-all"
           >
-            <span className="text-2xl">📦</span>
+            <Download className="h-5 w-5 text-primary-300" />
             <div className="text-left">
               <p className="text-white font-semibold">Download All Files</p>
               <p className="text-gray-400 text-sm">Get AGENT.md, SKILLS.md & more</p>
@@ -198,9 +215,9 @@ export default function ProfilePage() {
 
           <button
             onClick={copySystemPrompt}
-            className="flex items-center gap-3 px-6 py-4 bg-gray-800/50 border border-gray-700 rounded-xl hover:bg-gray-800 transition-all"
+            className="flex items-center gap-3 px-4 py-3 md:px-6 md:py-4 bg-gray-800/50 border border-gray-700 rounded-xl hover:bg-gray-800 transition-all"
           >
-            <span className="text-2xl">{copied ? '✅' : '📋'}</span>
+            <ClipboardCopy className={`h-5 w-5 ${copied ? 'text-green-400' : 'text-primary-300'}`} />
             <div className="text-left">
               <p className="text-white font-semibold">{copied ? 'Copied!' : 'Copy System Prompt'}</p>
               <p className="text-gray-400 text-sm">Use with ChatGPT or Claude</p>
@@ -209,7 +226,7 @@ export default function ProfilePage() {
         </div>
 
         {/* Tabs */}
-        <div className="flex justify-center gap-4 mb-8" role="tablist" aria-label="Profile sections">
+        <div className="flex justify-center gap-2 md:gap-4 mb-6 md:mb-8" role="tablist" aria-label="Profile sections">
           {(['overview', 'personality', 'files'] as const).map((tab) => (
             <button
               id={tabId(tab)}
@@ -219,7 +236,7 @@ export default function ProfilePage() {
               aria-selected={activeTab === tab}
               aria-controls={tabPanelId(tab)}
               className={`
-                px-6 py-3 rounded-xl font-semibold transition-all duration-200
+                px-4 py-2.5 md:px-6 md:py-3 rounded-xl text-sm md:text-base font-semibold transition-all duration-200
                 ${activeTab === tab
                   ? 'bg-gradient-to-r from-primary-500/20 to-accent-500/20 border border-primary-500 text-white'
                   : 'text-gray-400 hover:text-white'
@@ -242,34 +259,40 @@ export default function ProfilePage() {
             {/* Personality Summary */}
             <div className="glass rounded-2xl p-6">
               <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-                <span>🎯</span> Personality Traits
+                <Target className="h-5 w-5 text-primary-300" /> Personality Traits
               </h3>
               <div className="grid grid-cols-2 gap-4">
-                {personalityTraits.map((trait) => (
-                  <div key={trait.label} className="bg-gray-800/50 rounded-xl p-4">
-                    <div className="text-2xl mb-2">{trait.icon}</div>
-                    <p className="text-gray-400 text-sm">{trait.label}</p>
-                    <p className="text-white font-semibold capitalize">{trait.value}</p>
-                  </div>
-                ))}
+                {personalityTraits.map((trait) => {
+                  const Icon = trait.icon
+                  return (
+                    <div key={trait.label} className="bg-gray-800/50 rounded-xl p-4">
+                      <Icon className="h-5 w-5 mb-2 text-primary-300" />
+                      <p className="text-gray-400 text-sm">{trait.label}</p>
+                      <p className="text-white font-semibold capitalize">{trait.value}</p>
+                    </div>
+                  )
+                })}
               </div>
             </div>
 
             {/* Work Style */}
             <div className="glass rounded-2xl p-6">
               <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-                <span>💼</span> Work Style
+                <Briefcase className="h-5 w-5 text-primary-300" /> Work Style
               </h3>
               <div className="space-y-4">
-                {workTraits.map((trait) => (
-                  <div key={trait.label} className="flex items-center gap-4 bg-gray-800/50 rounded-xl p-4">
-                    <div className="text-2xl">{trait.icon}</div>
-                    <div>
-                      <p className="text-gray-400 text-sm">{trait.label}</p>
-                      <p className="text-white font-semibold capitalize">{trait.value}</p>
+                {workTraits.map((trait) => {
+                  const Icon = trait.icon
+                  return (
+                    <div key={trait.label} className="flex items-center gap-4 bg-gray-800/50 rounded-xl p-4">
+                      <Icon className="h-5 w-5 text-primary-300" />
+                      <div>
+                        <p className="text-gray-400 text-sm">{trait.label}</p>
+                        <p className="text-white font-semibold capitalize">{trait.value}</p>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  )
+                })}
                 {profile.workStyle.preferredTools.length > 0 && (
                   <div className="bg-gray-800/50 rounded-xl p-4">
                     <p className="text-gray-400 text-sm mb-2">Preferred Tools</p>
@@ -288,7 +311,7 @@ export default function ProfilePage() {
             {/* Topics & Interests */}
             <div className="glass rounded-2xl p-6">
               <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-                <span>🎨</span> Topics & Interests
+                <Palette className="h-5 w-5 text-primary-300" /> Topics & Interests
               </h3>
               <div className="flex flex-wrap gap-2">
                 {profile.interests.primaryTopics.map((topic) => (
@@ -305,7 +328,7 @@ export default function ProfilePage() {
             {/* Communication Style */}
             <div className="glass rounded-2xl p-6">
               <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-                <span>💬</span> Communication
+                <MessageCircle className="h-5 w-5 text-primary-300" /> Communication
               </h3>
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
@@ -411,11 +434,9 @@ export default function ProfilePage() {
                 </div>
                 <button
                   onClick={downloadAllAsZip}
-                  className="px-6 py-3 bg-gradient-to-r from-primary-500 to-accent-500 text-white rounded-xl font-semibold hover:from-primary-600 hover:to-accent-600 transition-all flex items-center gap-2"
+                  className="px-4 py-2.5 md:px-6 md:py-3 bg-gradient-to-r from-primary-500 to-accent-500 text-white rounded-xl font-semibold hover:from-primary-600 hover:to-accent-600 transition-all flex items-center gap-2"
                 >
-                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                  </svg>
+                  <Download className="h-4 w-4 md:h-5 md:w-5" />
                   Download ZIP
                 </button>
               </div>
@@ -423,23 +444,26 @@ export default function ProfilePage() {
 
             {/* Individual Files */}
             <div className="grid md:grid-cols-2 gap-4">
-              {files.map((file) => (
-                <div key={file.name} className="glass rounded-xl p-5 flex items-center justify-between">
-                  <div className="flex items-center gap-4">
-                    <span className="text-3xl">{file.icon}</span>
-                    <div>
-                      <p className="text-white font-semibold">{file.name}</p>
-                      <p className="text-gray-400 text-sm">{file.description}</p>
+              {files.map((file) => {
+                const Icon = file.icon
+                return (
+                  <div key={file.name} className="glass rounded-xl p-5 flex items-center justify-between">
+                    <div className="flex items-center gap-4">
+                      <Icon className="h-6 w-6 text-primary-300" />
+                      <div>
+                        <p className="text-white font-semibold">{file.name}</p>
+                        <p className="text-gray-400 text-sm">{file.description}</p>
+                      </div>
                     </div>
+                    <button
+                      onClick={file.action}
+                      className="px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-700 transition-colors"
+                    >
+                      Download
+                    </button>
                   </div>
-                  <button
-                    onClick={file.action}
-                    className="px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-700 transition-colors"
-                  >
-                    Download
-                  </button>
-                </div>
-              ))}
+                )
+              })}
             </div>
 
             {/* System Prompt Preview */}

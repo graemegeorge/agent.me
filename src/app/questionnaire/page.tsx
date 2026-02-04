@@ -225,7 +225,7 @@ export default function QuestionnairePage() {
 
   if (isGenerating) {
     return (
-      <main className="min-h-screen bg-app text-app flex items-center justify-center">
+      <main className="min-h-screen bg-app text-app flex items-center justify-center px-4">
         <div className="text-center">
           <div className="w-16 h-16 mx-auto mb-6 bg-primary-500/20 rounded-full flex items-center justify-center">
             <svg className="w-8 h-8 text-primary-500 animate-spin" fill="none" viewBox="0 0 24 24">
@@ -233,7 +233,7 @@ export default function QuestionnairePage() {
               <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
             </svg>
           </div>
-          <h2 className="text-2xl font-bold text-white mb-2">Creating Your AI Agent</h2>
+          <h2 className="text-xl md:text-2xl font-bold text-white mb-2">Creating Your AI Agent</h2>
           <p className="text-gray-400">Analyzing your responses...</p>
         </div>
       </main>
@@ -244,13 +244,13 @@ export default function QuestionnairePage() {
     <main className="min-h-screen bg-app text-app">
       {/* Header */}
       <header className="border-b border-gray-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 md:py-4">
+          <div className="flex items-center justify-between gap-3">
             <Link href="/" className="text-2xl font-bold brand-logo">
               agent-me.app
             </Link>
-            <nav aria-label="Questionnaire page" className="flex items-center gap-3">
-              <Link href="/analyze" className="text-gray-400 hover:text-white transition-colors">
+            <nav aria-label="Questionnaire page" className="flex items-center gap-2 md:gap-3">
+              <Link href="/analyze" className="hidden sm:inline text-gray-400 hover:text-white transition-colors">
                 Or upload ChatGPT export →
               </Link>
               <ThemeToggle />
@@ -260,7 +260,7 @@ export default function QuestionnairePage() {
       </header>
 
       {/* Progress Bar */}
-      <div className="max-w-2xl mx-auto px-4 pt-8">
+      <div className="max-w-2xl mx-auto px-4 pt-6 md:pt-8">
         <div className="flex items-center justify-between mb-2">
           <span className="text-sm text-gray-400">Question {currentQuestion + 1} of {questions.length}</span>
           <span className="text-sm text-gray-400">{Math.round(progress)}% complete</span>
@@ -274,9 +274,9 @@ export default function QuestionnairePage() {
       </div>
 
       {/* Question */}
-      <div className="max-w-2xl mx-auto px-4 py-16">
-        <div className="glass rounded-2xl p-8">
-          <h2 className="text-2xl font-bold text-white mb-8">{question.question}</h2>
+      <div className="max-w-2xl mx-auto px-4 py-8 md:py-16">
+        <div className="glass rounded-2xl p-5 md:p-8">
+          <h2 className="text-xl md:text-2xl font-bold text-white mb-6 md:mb-8">{question.question}</h2>
 
           {/* Text Input */}
           {question.type === 'text' && (
@@ -339,7 +339,7 @@ export default function QuestionnairePage() {
 
           {/* Multi-select */}
           {question.type === 'multiselect' && (
-            <div className="grid grid-cols-2 gap-3" role="group" aria-label={question.question}>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3" role="group" aria-label={question.question}>
               {question.options?.map((option) => {
                 const selected = ((responses[question.id] as string[]) || []).includes(option)
                 return (
@@ -373,12 +373,12 @@ export default function QuestionnairePage() {
         </div>
 
         {/* Navigation */}
-        <div className="flex justify-between mt-8">
+        <div className="flex justify-between mt-6 md:mt-8">
           <button
             onClick={handleBack}
             disabled={currentQuestion === 0}
             className={`
-              px-6 py-3 rounded-xl font-semibold transition-all duration-200
+              px-4 py-2.5 md:px-6 md:py-3 rounded-xl font-semibold transition-all duration-200
               ${currentQuestion === 0
                 ? 'text-gray-600 cursor-not-allowed'
                 : 'text-gray-400 hover:text-white'
@@ -392,7 +392,7 @@ export default function QuestionnairePage() {
             onClick={handleNext}
             disabled={!canProceed()}
             className={`
-              px-8 py-3 rounded-xl font-semibold transition-all duration-200
+              px-5 py-2.5 md:px-8 md:py-3 rounded-xl font-semibold transition-all duration-200
               ${canProceed()
                 ? 'bg-gradient-to-r from-primary-500 to-accent-500 text-white hover:from-primary-600 hover:to-accent-600'
                 : 'bg-gray-800 text-gray-600 cursor-not-allowed'

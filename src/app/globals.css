@@ -7,7 +7,10 @@
   --color-surface-strong: #dde8f8;
   --color-text: #0b1324;
   --color-muted: #52617d;
+  --color-muted-strong: #36445f;
   --color-border: #c6d4e8;
+  --color-panel: rgba(255, 255, 255, 0.7);
+  --color-panel-border: rgba(177, 194, 218, 0.72);
   --glass-bg: rgba(255, 255, 255, 0.82);
   --glass-border: rgba(139, 162, 196, 0.42);
   --gradient-overlay: rgba(243, 247, 255, 0.9);
@@ -20,7 +23,10 @@
   --color-surface-strong: #0b1220;
   --color-text: #f9fafb;
   --color-muted: #9ca3af;
+  --color-muted-strong: #c5d0df;
   --color-border: #374151;
+  --color-panel: rgba(11, 18, 32, 0.45);
+  --color-panel-border: rgba(148, 163, 184, 0.2);
   --glass-bg: rgba(15, 23, 42, 0.72);
   --glass-border: rgba(148, 163, 184, 0.2);
   --gradient-overlay: rgba(3, 7, 18, 0.85);
@@ -34,7 +40,10 @@
     --color-surface-strong: #0b1220;
     --color-text: #f9fafb;
     --color-muted: #9ca3af;
+    --color-muted-strong: #c5d0df;
     --color-border: #374151;
+    --color-panel: rgba(11, 18, 32, 0.45);
+    --color-panel-border: rgba(148, 163, 184, 0.2);
     --glass-bg: rgba(15, 23, 42, 0.72);
     --glass-border: rgba(148, 163, 184, 0.2);
     --gradient-overlay: rgba(3, 7, 18, 0.85);
@@ -81,8 +90,56 @@ body {
   color: var(--color-muted);
 }
 
+.text-muted-strong {
+  color: var(--color-muted-strong);
+}
+
 .border-app {
   border-color: var(--color-border);
+}
+
+.panel-surface {
+  background: var(--color-panel);
+  border: 1px solid var(--color-panel-border);
+  backdrop-filter: blur(10px);
+}
+
+.hero-overlay {
+  background: linear-gradient(to bottom, transparent, color-mix(in srgb, var(--color-bg) 90%, transparent));
+}
+
+.text-gradient-brand {
+  background-image: linear-gradient(to right, #38bdf8, #e879f9);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.text-gradient-heading {
+  background-image: linear-gradient(to right, #0b1324, #1e3a8a, #334155);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.dark .text-gradient-heading {
+  background-image: linear-gradient(to right, #ffffff, #e2e8f0, #94a3b8);
+}
+
+.text-gradient-accent {
+  background-image: linear-gradient(to right, #38bdf8, #e879f9, #38bdf8);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.section-muted {
+  background: color-mix(in srgb, var(--color-surface-strong) 75%, transparent);
+}
+
+.dark .section-muted {
+  background: color-mix(in srgb, var(--color-surface-strong) 55%, transparent);
 }
 
 .bg-gray-950 {
@@ -115,6 +172,13 @@ body {
 .text-gray-500,
 .text-gray-600 {
   color: var(--color-muted) !important;
+}
+
+.dark .text-gray-300,
+.dark .text-gray-400,
+.dark .text-gray-500,
+.dark .text-gray-600 {
+  color: var(--color-muted-strong) !important;
 }
 
 @keyframes gradient {

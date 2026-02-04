@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { AgentProfile } from '@/types'
 import { ThemeToggle } from '@/components/theme/ThemeToggle'
+import { Bot, KeyRound } from 'lucide-react'
 
 interface Message {
   id: string
@@ -155,27 +156,26 @@ export default function ChatPage() {
     <main className="min-h-screen bg-app text-app flex flex-col">
       {/* Header */}
       <header className="border-b border-gray-800 flex-shrink-0">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-3 md:py-4">
+          <div className="flex items-center justify-between gap-3">
+            <div className="flex items-center gap-2 md:gap-4">
               <Link href="/" className="text-2xl font-bold brand-logo">
                 agent-me.app
               </Link>
-              <span className="text-gray-600">|</span>
-              <span className="text-gray-400">Chat with Your Agent</span>
+              <span className="hidden sm:inline text-gray-600">|</span>
+              <span className="hidden sm:inline text-gray-400">Chat with Your Agent</span>
             </div>
-            <nav aria-label="Chat actions" className="flex gap-3 items-center">
+            <nav aria-label="Chat actions" className="flex gap-2 md:gap-3 items-center">
               <button
                 onClick={() => setShowApiKeyModal(true)}
-                className="px-4 py-2 text-gray-400 hover:text-white transition-colors flex items-center gap-2"
+                className="px-2.5 py-2 md:px-4 text-gray-400 hover:text-white transition-colors flex items-center gap-2 text-sm md:text-base"
               >
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
-                </svg>
-                API Key
+                <KeyRound className="h-4 w-4" />
+                <span className="hidden sm:inline">API Key</span>
               </button>
-              <Link href="/profile" className="px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-700 transition-colors">
-                Back to Profile
+              <Link href="/profile" className="px-3 py-2 md:px-4 bg-gray-800 text-white rounded-lg hover:bg-gray-700 transition-colors text-sm md:text-base">
+                <span className="hidden sm:inline">Back to Profile</span>
+                <span className="sm:hidden">Profile</span>
               </Link>
               <ThemeToggle />
             </nav>
@@ -184,13 +184,13 @@ export default function ChatPage() {
       </header>
 
       {/* Chat Area */}
-      <div className="flex-1 overflow-hidden flex flex-col max-w-5xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-6">
+      <div className="flex-1 overflow-hidden flex flex-col max-w-5xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-4 md:py-6">
         {/* Messages */}
         <div className="flex-1 overflow-y-auto space-y-4 mb-4">
           {messages.length === 0 && (
-            <div className="text-center py-12">
-              <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-r from-primary-500/20 to-accent-500/20 rounded-full flex items-center justify-center">
-                <span className="text-3xl">🤖</span>
+            <div className="text-center py-8 md:py-12">
+              <div className="w-14 h-14 md:w-16 md:h-16 mx-auto mb-4 bg-gradient-to-r from-primary-500/20 to-accent-500/20 rounded-full flex items-center justify-center">
+                <Bot className="h-7 w-7 md:h-8 md:w-8 text-primary-300" />
               </div>
               <h2 className="text-xl font-semibold text-white mb-2">Chat with Your AI Agent</h2>
               <p className="text-gray-400 max-w-md mx-auto">

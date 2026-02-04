@@ -119,13 +119,13 @@ export default function AnalyzePage() {
     <main className="min-h-screen bg-app text-app">
       {/* Header */}
       <header className="border-b border-gray-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 md:py-4">
+          <div className="flex items-center justify-between gap-3">
             <Link href="/" className="text-2xl font-bold brand-logo">
               agent-me.app
             </Link>
-            <nav aria-label="Analyze page" className="flex items-center gap-3">
-              <Link href="/questionnaire" className="text-gray-400 hover:text-white transition-colors">
+            <nav aria-label="Analyze page" className="flex items-center gap-2 md:gap-3">
+              <Link href="/questionnaire" className="hidden sm:inline text-gray-400 hover:text-white transition-colors">
                 Or take the questionnaire →
               </Link>
               <ThemeToggle />
@@ -134,10 +134,10 @@ export default function AnalyzePage() {
         </div>
       </header>
 
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold mb-4">
-            <span className="bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-16">
+        <div className="text-center mb-8 md:mb-12">
+          <h1 className="text-3xl md:text-4xl font-bold mb-4">
+            <span className="text-gradient-heading">
               Upload Your ChatGPT Export
             </span>
           </h1>
@@ -150,7 +150,7 @@ export default function AnalyzePage() {
         {!progress && (
           <div
             className={`
-              relative border-2 border-dashed rounded-2xl p-12 text-center
+              relative border-2 border-dashed rounded-2xl p-7 md:p-12 text-center
               transition-all duration-300 cursor-pointer
               ${isDragging
                 ? 'border-primary-500 bg-primary-500/10'
@@ -285,7 +285,7 @@ export default function AnalyzePage() {
         )}
 
         {/* Instructions */}
-        <div className="mt-12 glass rounded-2xl p-6">
+        <div className="mt-10 md:mt-12 glass rounded-2xl p-5 md:p-6">
           <h3 className="text-lg font-semibold text-white mb-4">How to export your ChatGPT data:</h3>
           <ol className="space-y-3 text-gray-400">
             <li className="flex gap-3">

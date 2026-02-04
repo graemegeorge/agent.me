@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { generateProfileFromAuthData } from '@/lib/auth-capture'
 import { ThemeToggle } from '@/components/theme/ThemeToggle'
+import { UserCircle2 } from 'lucide-react'
 
 interface CaptureClientProps {
   name?: string | null
@@ -40,12 +41,12 @@ export default function CaptureClient({ name, email, image, provider }: CaptureC
   return (
     <main className="min-h-screen bg-app text-app">
       <header className="border-b border-gray-800">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-3 md:py-4 flex items-center justify-between">
           <Link href="/" className="text-2xl font-bold brand-logo">
             agent-me.app
           </Link>
-          <nav aria-label="Capture page" className="flex items-center gap-3">
-            <Link href="/analyze" className="text-gray-400 hover:text-white transition-colors">
+          <nav aria-label="Capture page" className="flex items-center gap-2 md:gap-3">
+            <Link href="/analyze" className="hidden sm:inline text-gray-400 hover:text-white transition-colors">
               Upload export instead →
             </Link>
             <ThemeToggle />
@@ -53,10 +54,10 @@ export default function CaptureClient({ name, email, image, provider }: CaptureC
         </div>
       </header>
 
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-8">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12 space-y-6 md:space-y-8">
         <div className="text-center">
-          <h1 className="text-4xl font-bold mb-3">
-            <span className="bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
+          <h1 className="text-2xl md:text-4xl font-bold mb-3">
+            <span className="text-gradient-heading">
               Connected Data Capture
             </span>
           </h1>
@@ -70,8 +71,8 @@ export default function CaptureClient({ name, email, image, provider }: CaptureC
             {image ? (
               <img src={image} alt={name || 'User avatar'} className="w-16 h-16 rounded-full border border-gray-700" />
             ) : (
-              <div className="w-16 h-16 rounded-full bg-gray-800 border border-gray-700 flex items-center justify-center text-2xl">
-                👤
+              <div className="w-16 h-16 rounded-full bg-gray-800 border border-gray-700 flex items-center justify-center">
+                <UserCircle2 className="h-8 w-8 text-muted-strong" />
               </div>
             )}
             <div>
