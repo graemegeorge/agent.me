@@ -1,0 +1,41 @@
+{
+  "name": "agent.me",
+  "version": "1.0.0",
+  "description": "Generate an AI agent based on your personality and work style",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://local_proxy@127.0.0.1:59830/git/graemegeorge/agent.me"
+  },
+  "keywords": [
+    "ai",
+    "agent",
+    "personality",
+    "chatgpt"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@auth/core": "^0.41.0",
+    "@tailwindcss/postcss": "^4.1.18",
+    "jszip": "^3.10.1",
+    "next": "^16.1.6",
+    "next-auth": "^5.0.0-beta.30",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4"
+  },
+  "devDependencies": {
+    "@types/node": "^25.2.0",
+    "@types/react": "^19.2.10",
+    "@types/react-dom": "^19.2.3",
+    "autoprefixer": "^10.4.24",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^4.1.18",
+    "typescript": "^5.9.3"
+  }
+}
