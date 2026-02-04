@@ -73,15 +73,6 @@ export default function Home() {
 
         <div className="relative mx-auto max-w-7xl px-4 pt-16 pb-20 sm:px-6 md:pt-20 md:pb-28 lg:px-8">
           <div className="panel-surface mx-auto max-w-5xl rounded-2xl px-4 py-6 text-center shadow-[0_16px_38px_rgba(59,130,246,0.13)] sm:px-6 md:rounded-3xl md:px-8 md:py-10">
-            <div className="mb-6 inline-flex items-center justify-center md:mb-8">
-              <div className="relative">
-                <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-sky-500 to-fuchsia-500 opacity-40 blur-lg" />
-                <div className="relative rounded-2xl border border-gray-800 bg-gray-900 px-5 py-2.5 md:px-6 md:py-3">
-                  <span className="text-gradient-brand text-2xl font-bold md:text-4xl">agent-me.app</span>
-                </div>
-              </div>
-            </div>
-
             <h1 className="mb-4 text-4xl font-bold leading-tight sm:text-5xl md:mb-6 md:text-7xl">
               <span className="text-gradient-heading">Create Your</span>
               <br />
