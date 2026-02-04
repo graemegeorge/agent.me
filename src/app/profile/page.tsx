@@ -190,10 +190,10 @@ export default function ProfilePage() {
         </div>
 
         {/* Quick Actions */}
-        <div className="flex flex-wrap justify-center gap-3 md:gap-4 mb-10 md:mb-12">
+        <div className="flex flex-col sm:flex-row sm:flex-wrap justify-center gap-3 md:gap-4 mb-10 md:mb-12">
           <Link
             href="/chat"
-            className="flex items-center gap-3 px-4 py-3 md:px-6 md:py-4 bg-gradient-to-r from-primary-500/20 to-accent-500/20 border border-primary-500/30 rounded-xl hover:from-primary-500/30 hover:to-accent-500/30 transition-all"
+            className="flex w-full sm:w-auto items-center gap-3 px-4 py-3 md:px-6 md:py-4 bg-gradient-to-r from-primary-500/20 to-accent-500/20 border border-primary-500/30 rounded-xl hover:from-primary-500/30 hover:to-accent-500/30 transition-all"
           >
             <MessageCircle className="h-5 w-5 text-primary-300" />
             <div className="text-left">
@@ -204,7 +204,7 @@ export default function ProfilePage() {
 
           <button
             onClick={downloadAllAsZip}
-            className="flex items-center gap-3 px-4 py-3 md:px-6 md:py-4 bg-gray-800/50 border border-gray-700 rounded-xl hover:bg-gray-800 transition-all"
+            className="flex w-full sm:w-auto items-center gap-3 px-4 py-3 md:px-6 md:py-4 bg-gray-800/50 border border-gray-700 rounded-xl hover:bg-gray-800 transition-all"
           >
             <Download className="h-5 w-5 text-primary-300" />
             <div className="text-left">
@@ -215,7 +215,7 @@ export default function ProfilePage() {
 
           <button
             onClick={copySystemPrompt}
-            className="flex items-center gap-3 px-4 py-3 md:px-6 md:py-4 bg-gray-800/50 border border-gray-700 rounded-xl hover:bg-gray-800 transition-all"
+            className="flex w-full sm:w-auto items-center gap-3 px-4 py-3 md:px-6 md:py-4 bg-gray-800/50 border border-gray-700 rounded-xl hover:bg-gray-800 transition-all"
           >
             <ClipboardCopy className={`h-5 w-5 ${copied ? 'text-green-400' : 'text-primary-300'}`} />
             <div className="text-left">
@@ -298,7 +298,7 @@ export default function ProfilePage() {
                     <p className="text-gray-400 text-sm mb-2">Preferred Tools</p>
                     <div className="flex flex-wrap gap-2">
                       {profile.workStyle.preferredTools.map((tool) => (
-                        <span key={tool} className="px-3 py-1 bg-gray-700 rounded-full text-sm text-white">
+                        <span key={tool} className="px-3 py-1 bg-gradient-to-r from-primary-500/20 to-accent-500/20 border border-primary-500/30 rounded-full text-sm text-app">
                           {tool}
                         </span>
                       ))}

@@ -316,14 +316,14 @@ export default function AnalyzePage() {
         </div>
 
         {/* Privacy Note */}
-        <div className="mt-6 p-4 bg-gray-900/50 rounded-xl border border-gray-800">
+        <div className="mt-6 p-4 bg-green-500/10 rounded-xl border border-green-500/30">
           <div className="flex gap-3">
-            <svg className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg className="w-5 h-5 text-green-600 dark:text-green-400 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
             </svg>
             <div>
-              <p className="text-white font-semibold text-sm">Your privacy is protected</p>
-              <p className="text-gray-400 text-sm">All analysis happens in your browser. We don't store or transmit your conversations.</p>
+              <p className="text-green-800 dark:text-green-300 font-semibold text-sm">Your privacy is protected</p>
+              <p className="text-green-700 dark:text-green-400 text-sm">All analysis happens in your browser. We don&apos;t store or transmit your conversations.</p>
             </div>
           </div>
         </div>
