@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { QuestionnaireResponse, AgentProfile } from '@/types'
 import { generateProfileFromQuestionnaire } from '@/lib/questionnaire'
+import { ThemeToggle } from '@/components/theme/ThemeToggle'
 
 interface Question {
   id: keyof QuestionnaireResponse
@@ -224,7 +225,7 @@ export default function QuestionnairePage() {
 
   if (isGenerating) {
     return (
-      <main className="min-h-screen bg-gray-950 flex items-center justify-center">
+      <main className="min-h-screen bg-app text-app flex items-center justify-center">
         <div className="text-center">
           <div className="w-16 h-16 mx-auto mb-6 bg-primary-500/20 rounded-full flex items-center justify-center">
             <svg className="w-8 h-8 text-primary-500 animate-spin" fill="none" viewBox="0 0 24 24">
@@ -240,7 +241,7 @@ export default function QuestionnairePage() {
   }
 
   return (
-    <main className="min-h-screen bg-gray-950">
+    <main className="min-h-screen bg-app text-app">
       {/* Header */}
       <header className="border-b border-gray-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
@@ -248,10 +249,11 @@ export default function QuestionnairePage() {
             <Link href="/" className="text-2xl font-bold brand-logo">
               agent-me.app
             </Link>
-            <nav aria-label="Questionnaire page">
+            <nav aria-label="Questionnaire page" className="flex items-center gap-3">
               <Link href="/analyze" className="text-gray-400 hover:text-white transition-colors">
                 Or upload ChatGPT export →
               </Link>
+              <ThemeToggle />
             </nav>
           </div>
         </div>

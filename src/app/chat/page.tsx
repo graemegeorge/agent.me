@@ -4,6 +4,7 @@ import { useEffect, useState, useRef } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { AgentProfile } from '@/types'
+import { ThemeToggle } from '@/components/theme/ThemeToggle'
 
 interface Message {
   id: string
@@ -144,14 +145,14 @@ export default function ChatPage() {
 
   if (!profile) {
     return (
-      <main className="min-h-screen bg-gray-950 flex items-center justify-center">
+      <main className="min-h-screen bg-app text-app flex items-center justify-center">
         <div className="animate-spin w-8 h-8 border-2 border-primary-500 border-t-transparent rounded-full" />
       </main>
     )
   }
 
   return (
-    <main className="min-h-screen bg-gray-950 flex flex-col">
+    <main className="min-h-screen bg-app text-app flex flex-col">
       {/* Header */}
       <header className="border-b border-gray-800 flex-shrink-0">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
@@ -163,7 +164,7 @@ export default function ChatPage() {
               <span className="text-gray-600">|</span>
               <span className="text-gray-400">Chat with Your Agent</span>
             </div>
-            <nav aria-label="Chat actions" className="flex gap-3">
+            <nav aria-label="Chat actions" className="flex gap-3 items-center">
               <button
                 onClick={() => setShowApiKeyModal(true)}
                 className="px-4 py-2 text-gray-400 hover:text-white transition-colors flex items-center gap-2"
@@ -176,6 +177,7 @@ export default function ChatPage() {
               <Link href="/profile" className="px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-700 transition-colors">
                 Back to Profile
               </Link>
+              <ThemeToggle />
             </nav>
           </div>
         </div>

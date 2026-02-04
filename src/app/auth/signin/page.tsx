@@ -2,10 +2,14 @@
 
 import { signIn } from 'next-auth/react'
 import Link from 'next/link'
+import { ThemeToggle } from '@/components/theme/ThemeToggle'
 
 export default function SignInPage() {
   return (
-    <main className="min-h-screen bg-gray-950 flex items-center justify-center">
+    <main className="min-h-screen bg-app text-app flex items-center justify-center">
+      <div className="fixed right-4 top-4 z-50">
+        <ThemeToggle />
+      </div>
       <div className="max-w-md w-full mx-4">
         <div className="text-center mb-8">
           <Link href="/" className="inline-block text-3xl font-bold brand-logo mb-4">

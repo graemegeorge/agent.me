@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 import { AgentProfile } from '@/types'
 import { generateAgentMd, generateSkillsMd, generateSystemPromptMd } from '@/lib/generator'
 import JSZip from 'jszip'
+import { ThemeToggle } from '@/components/theme/ThemeToggle'
 
 export default function ProfilePage() {
   const router = useRouter()
@@ -95,7 +96,7 @@ export default function ProfilePage() {
 
   if (!profile) {
     return (
-      <main className="min-h-screen bg-gray-950 flex items-center justify-center">
+      <main className="min-h-screen bg-app text-app flex items-center justify-center">
         <div className="animate-spin w-8 h-8 border-2 border-primary-500 border-t-transparent rounded-full" />
       </main>
     )
@@ -124,7 +125,7 @@ export default function ProfilePage() {
   const tabId = (tab: 'overview' | 'personality' | 'files') => `${tab}-tab`
 
   return (
-    <main className="min-h-screen bg-gray-950">
+    <main className="min-h-screen bg-app text-app">
       {/* Header */}
       <header className="border-b border-gray-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
@@ -132,7 +133,7 @@ export default function ProfilePage() {
             <Link href="/" className="text-2xl font-bold brand-logo">
               agent-me.app
             </Link>
-            <nav aria-label="Profile actions" className="flex gap-3">
+            <nav aria-label="Profile actions" className="flex gap-3 items-center">
               <Link
                 href="/chat"
                 className="px-4 py-2 bg-gradient-to-r from-primary-500 to-accent-500 text-white rounded-lg font-semibold hover:from-primary-600 hover:to-accent-600 transition-all flex items-center gap-2"
@@ -145,6 +146,7 @@ export default function ProfilePage() {
               <Link href="/" className="px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-700 transition-colors">
                 Create New
               </Link>
+              <ThemeToggle />
             </nav>
           </div>
         </div>

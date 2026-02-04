@@ -5,6 +5,7 @@ import { useState } from 'react'
 import { signIn } from 'next-auth/react'
 import Script from 'next/script'
 import { Tooltip } from '@/components/ui/Tooltip'
+import { ThemeToggle } from '@/components/theme/ThemeToggle'
 
 export default function Home() {
   const [hoveredFeature, setHoveredFeature] = useState<number | null>(null)
@@ -33,7 +34,7 @@ export default function Home() {
   ]
 
   return (
-    <main className="min-h-screen">
+    <main className="min-h-screen bg-app text-app">
       <Script
         id="software-application-jsonld"
         type="application/ld+json"
@@ -57,6 +58,9 @@ export default function Home() {
           }),
         }}
       />
+      <div className="fixed right-4 top-4 z-50">
+        <ThemeToggle />
+      </div>
       {/* Hero Section */}
       <section className="relative overflow-hidden">
         {/* Animated background */}

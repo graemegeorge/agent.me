@@ -4,6 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { generateProfileFromAuthData } from '@/lib/auth-capture'
+import { ThemeToggle } from '@/components/theme/ThemeToggle'
 
 interface CaptureClientProps {
   name?: string | null
@@ -37,16 +38,17 @@ export default function CaptureClient({ name, email, image, provider }: CaptureC
   }
 
   return (
-    <main className="min-h-screen bg-gray-950">
+    <main className="min-h-screen bg-app text-app">
       <header className="border-b border-gray-800">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
           <Link href="/" className="text-2xl font-bold brand-logo">
             agent-me.app
           </Link>
-          <nav aria-label="Capture page">
+          <nav aria-label="Capture page" className="flex items-center gap-3">
             <Link href="/analyze" className="text-gray-400 hover:text-white transition-colors">
               Upload export instead →
             </Link>
+            <ThemeToggle />
           </nav>
         </div>
       </header>

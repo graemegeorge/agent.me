@@ -1,27 +1,49 @@
 @import "tailwindcss";
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+  --color-bg: #f8fafc;
+  --color-surface: #ffffff;
+  --color-surface-hover: #f1f5f9;
+  --color-surface-strong: #e2e8f0;
+  --color-text: #0f172a;
+  --color-muted: #475569;
+  --color-border: #cbd5e1;
+  --glass-bg: rgba(255, 255, 255, 0.72);
+  --glass-border: rgba(148, 163, 184, 0.45);
+  --gradient-overlay: rgba(248, 250, 252, 0.9);
+}
+
+.dark {
+  --color-bg: #030712;
+  --color-surface: #111827;
+  --color-surface-hover: #1f2937;
+  --color-surface-strong: #0b1220;
+  --color-text: #f9fafb;
+  --color-muted: #9ca3af;
+  --color-border: #374151;
+  --glass-bg: rgba(15, 23, 42, 0.72);
+  --glass-border: rgba(148, 163, 184, 0.2);
+  --gradient-overlay: rgba(3, 7, 18, 0.85);
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+  :root:not(.light):not(.dark) {
+    --color-bg: #030712;
+    --color-surface: #111827;
+    --color-surface-hover: #1f2937;
+    --color-surface-strong: #0b1220;
+    --color-text: #f9fafb;
+    --color-muted: #9ca3af;
+    --color-border: #374151;
+    --glass-bg: rgba(15, 23, 42, 0.72);
+    --glass-border: rgba(148, 163, 184, 0.2);
+    --gradient-overlay: rgba(3, 7, 18, 0.85);
   }
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  color: var(--color-text);
+  background: var(--color-bg);
 }
 
 @utility text-balance {
@@ -32,6 +54,66 @@ body {
   background: linear-gradient(-45deg, #0ea5e9, #8b5cf6, #d946ef, #0ea5e9);
   background-size: 400% 400%;
   animation: gradient 15s ease infinite;
+}
+
+.bg-app {
+  background-color: var(--color-bg);
+}
+
+.bg-surface {
+  background-color: var(--color-surface);
+}
+
+.bg-surface-hover:hover {
+  background-color: var(--color-surface-hover);
+}
+
+.bg-surface-strong {
+  background-color: var(--color-surface-strong);
+}
+
+.text-app {
+  color: var(--color-text);
+}
+
+.text-muted {
+  color: var(--color-muted);
+}
+
+.border-app {
+  border-color: var(--color-border);
+}
+
+.bg-gray-950 {
+  background-color: var(--color-bg) !important;
+}
+
+.bg-gray-900,
+.bg-gray-900\/70 {
+  background-color: var(--color-surface-strong) !important;
+}
+
+.bg-gray-800,
+.bg-gray-800\/50 {
+  background-color: var(--color-surface) !important;
+}
+
+.border-gray-900,
+.border-gray-800,
+.border-gray-700 {
+  border-color: var(--color-border) !important;
+}
+
+.text-white,
+.text-gray-100 {
+  color: var(--color-text) !important;
+}
+
+.text-gray-300,
+.text-gray-400,
+.text-gray-500,
+.text-gray-600 {
+  color: var(--color-muted) !important;
 }
 
 @keyframes gradient {
@@ -61,14 +143,9 @@ body {
 }
 
 .glass {
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--glass-bg);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.dark .glass {
-  background: rgba(0, 0, 0, 0.3);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--glass-border);
 }
 
 .brand-logo {
