@@ -32,12 +32,12 @@ export function Tooltip({ content, children }: TooltipProps) {
         id={tooltipId}
         role="tooltip"
         aria-hidden={!isOpen}
-        className={`pointer-events-none absolute left-1/2 top-full z-30 mt-2 w-max max-w-xs -translate-x-1/2 rounded-lg border border-gray-700 bg-gray-900/95 px-3 py-2 text-sm text-gray-100 shadow-xl shadow-black/40 transition-all duration-200 ${
+        className={`pointer-events-none absolute left-1/2 top-full z-30 mt-2 w-max max-w-xs -translate-x-1/2 rounded-lg border border-app bg-surface px-3 py-2 text-sm text-app shadow-xl shadow-black/20 transition-all duration-200 ${
           isOpen ? 'translate-y-0 opacity-100' : 'translate-y-1 opacity-0'
         }`}
       >
         {content}
-        <span className="absolute left-1/2 top-0 h-2 w-2 -translate-x-1/2 -translate-y-1/2 rotate-45 border-l border-t border-gray-700 bg-gray-900/95" />
+        <span className="absolute left-1/2 top-0 h-2 w-2 -translate-x-1/2 -translate-y-1/2 rotate-45 border-l border-t border-app bg-surface" />
       </div>
     </div>
   )
