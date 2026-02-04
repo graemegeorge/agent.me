@@ -4,11 +4,13 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { AgentProfile } from '@/types'
+import { generateAgentMd, generateSkillsMd, generateSystemPromptMd } from '@/lib/generator'
+import JSZip from 'jszip'
 
 export default function ProfilePage() {
   const router = useRouter()
   const [profile, setProfile] = useState<AgentProfile | null>(null)
-  const [activeTab, setActiveTab] = useState<'overview' | 'personality' | 'prompt'>('overview')
+  const [activeTab, setActiveTab] = useState<'overview' | 'personality' | 'files'>('overview')
   const [copied, setCopied] = useState(false)
 
   useEffect(() => {
@@ -16,7 +18,6 @@ export default function ProfilePage() {
     if (stored) {
       try {
         const parsed = JSON.parse(stored)
-        // Convert createdAt back to Date if it's a string
         if (typeof parsed.createdAt === 'string') {
           parsed.createdAt = new Date(parsed.createdAt)
         }
@@ -38,13 +39,56 @@ export default function ProfilePage() {
     }
   }
 
-  const downloadProfile = () => {
+  const downloadFile = (content: string, filename: string) => {
+    const blob = new Blob([content], { type: 'text/markdown' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = filename
+    a.click()
+    URL.revokeObjectURL(url)
+  }
+
+  const downloadAgentMd = () => {
+    if (!profile) return
+    downloadFile(generateAgentMd(profile), 'AGENT.md')
+  }
+
+  const downloadSkillsMd = () => {
+    if (!profile) return
+    downloadFile(generateSkillsMd(profile), 'SKILLS.md')
+  }
+
+  const downloadSystemPromptMd = () => {
+    if (!profile) return
+    downloadFile(generateSystemPromptMd(profile), 'SYSTEM_PROMPT.md')
+  }
+
+  const downloadProfileJson = () => {
     if (!profile) return
     const blob = new Blob([JSON.stringify(profile, null, 2)], { type: 'application/json' })
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
     a.href = url
-    a.download = 'agent-profile.json'
+    a.download = 'profile.json'
+    a.click()
+    URL.revokeObjectURL(url)
+  }
+
+  const downloadAllAsZip = async () => {
+    if (!profile) return
+
+    const zip = new JSZip()
+    zip.file('AGENT.md', generateAgentMd(profile))
+    zip.file('SKILLS.md', generateSkillsMd(profile))
+    zip.file('SYSTEM_PROMPT.md', generateSystemPromptMd(profile))
+    zip.file('profile.json', JSON.stringify(profile, null, 2))
+
+    const content = await zip.generateAsync({ type: 'blob' })
+    const url = URL.createObjectURL(content)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = 'my-ai-agent.zip'
     a.click()
     URL.revokeObjectURL(url)
   }
@@ -69,6 +113,13 @@ export default function ProfilePage() {
     { label: 'Learning Style', value: profile.workStyle.learningStyle, icon: '📚' },
   ]
 
+  const files = [
+    { name: 'AGENT.md', description: 'Your agent persona and profile', icon: '🤖', action: downloadAgentMd },
+    { name: 'SKILLS.md', description: 'Capabilities and expertise', icon: '⚡', action: downloadSkillsMd },
+    { name: 'SYSTEM_PROMPT.md', description: 'Ready-to-use AI prompt', icon: '📋', action: downloadSystemPromptMd },
+    { name: 'profile.json', description: 'Raw profile data', icon: '📊', action: downloadProfileJson },
+  ]
+
   return (
     <main className="min-h-screen bg-gray-950">
       {/* Header */}
@@ -78,16 +129,16 @@ export default function ProfilePage() {
             <Link href="/" className="text-2xl font-bold bg-gradient-to-r from-primary-400 to-accent-400 bg-clip-text text-transparent">
               agent.me
             </Link>
-            <div className="flex gap-4">
-              <button
-                onClick={downloadProfile}
-                className="px-4 py-2 text-gray-400 hover:text-white transition-colors flex items-center gap-2"
+            <div className="flex gap-3">
+              <Link
+                href="/chat"
+                className="px-4 py-2 bg-gradient-to-r from-primary-500 to-accent-500 text-white rounded-lg font-semibold hover:from-primary-600 hover:to-accent-600 transition-all flex items-center gap-2"
               >
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                 </svg>
-                Download
-              </button>
+                Chat with Agent
+              </Link>
               <Link href="/" className="px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-700 transition-colors">
                 Create New
               </Link>
@@ -98,7 +149,7 @@ export default function ProfilePage() {
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Profile Header */}
-        <div className="text-center mb-12">
+        <div className="text-center mb-8">
           <div className="relative inline-block mb-6">
             <div className="absolute inset-0 bg-gradient-to-r from-primary-500 to-accent-500 rounded-full blur-lg opacity-50" />
             <div className="relative w-24 h-24 bg-gradient-to-r from-primary-500 to-accent-500 rounded-full flex items-center justify-center">
@@ -107,7 +158,7 @@ export default function ProfilePage() {
           </div>
           <h1 className="text-4xl font-bold mb-2">
             <span className="bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
-              Your AI Agent
+              Your AI Agent is Ready!
             </span>
           </h1>
           <p className="text-gray-400">
@@ -116,9 +167,45 @@ export default function ProfilePage() {
           </p>
         </div>
 
+        {/* Quick Actions */}
+        <div className="flex flex-wrap justify-center gap-4 mb-12">
+          <Link
+            href="/chat"
+            className="flex items-center gap-3 px-6 py-4 bg-gradient-to-r from-primary-500/20 to-accent-500/20 border border-primary-500/30 rounded-xl hover:from-primary-500/30 hover:to-accent-500/30 transition-all"
+          >
+            <span className="text-2xl">💬</span>
+            <div className="text-left">
+              <p className="text-white font-semibold">Chat with Your Agent</p>
+              <p className="text-gray-400 text-sm">Test your AI twin in real-time</p>
+            </div>
+          </Link>
+
+          <button
+            onClick={downloadAllAsZip}
+            className="flex items-center gap-3 px-6 py-4 bg-gray-800/50 border border-gray-700 rounded-xl hover:bg-gray-800 transition-all"
+          >
+            <span className="text-2xl">📦</span>
+            <div className="text-left">
+              <p className="text-white font-semibold">Download All Files</p>
+              <p className="text-gray-400 text-sm">Get AGENT.md, SKILLS.md & more</p>
+            </div>
+          </button>
+
+          <button
+            onClick={copySystemPrompt}
+            className="flex items-center gap-3 px-6 py-4 bg-gray-800/50 border border-gray-700 rounded-xl hover:bg-gray-800 transition-all"
+          >
+            <span className="text-2xl">{copied ? '✅' : '📋'}</span>
+            <div className="text-left">
+              <p className="text-white font-semibold">{copied ? 'Copied!' : 'Copy System Prompt'}</p>
+              <p className="text-gray-400 text-sm">Use with ChatGPT or Claude</p>
+            </div>
+          </button>
+        </div>
+
         {/* Tabs */}
         <div className="flex justify-center gap-4 mb-8">
-          {(['overview', 'personality', 'prompt'] as const).map((tab) => (
+          {(['overview', 'personality', 'files'] as const).map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
@@ -130,7 +217,7 @@ export default function ProfilePage() {
                 }
               `}
             >
-              {tab.charAt(0).toUpperCase() + tab.slice(1)}
+              {tab === 'files' ? 'Files & Export' : tab.charAt(0).toUpperCase() + tab.slice(1)}
             </button>
           ))}
         </div>
@@ -240,7 +327,6 @@ export default function ProfilePage() {
             <h3 className="text-xl font-semibold text-white mb-6">Detailed Personality Analysis</h3>
 
             <div className="space-y-8">
-              {/* Communication Style */}
               <div>
                 <h4 className="text-lg font-semibold text-primary-400 mb-3">Communication Style</h4>
                 <p className="text-gray-300">
@@ -250,7 +336,6 @@ export default function ProfilePage() {
                 </p>
               </div>
 
-              {/* Decision Making */}
               <div>
                 <h4 className="text-lg font-semibold text-accent-400 mb-3">Decision Making</h4>
                 <p className="text-gray-300">
@@ -263,7 +348,6 @@ export default function ProfilePage() {
                 </p>
               </div>
 
-              {/* Work Approach */}
               <div>
                 <h4 className="text-lg font-semibold text-primary-400 mb-3">Work Approach</h4>
                 <p className="text-gray-300">
@@ -272,7 +356,6 @@ export default function ProfilePage() {
                 </p>
               </div>
 
-              {/* Keywords */}
               {profile.analysis.topKeywords.length > 0 && (
                 <div>
                   <h4 className="text-lg font-semibold text-accent-400 mb-3">Top Keywords</h4>
@@ -292,57 +375,92 @@ export default function ProfilePage() {
           </div>
         )}
 
-        {/* System Prompt Tab */}
-        {activeTab === 'prompt' && (
-          <div className="glass rounded-2xl p-8">
-            <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-semibold text-white">Generated System Prompt</h3>
-              <button
-                onClick={copySystemPrompt}
-                className={`
-                  px-4 py-2 rounded-lg font-semibold transition-all duration-200 flex items-center gap-2
-                  ${copied
-                    ? 'bg-green-500/20 text-green-400'
-                    : 'bg-gray-800 text-white hover:bg-gray-700'
-                  }
-                `}
-              >
-                {copied ? (
-                  <>
-                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                    Copied!
-                  </>
-                ) : (
-                  <>
-                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                    </svg>
-                    Copy Prompt
-                  </>
-                )}
-              </button>
+        {/* Files Tab */}
+        {activeTab === 'files' && (
+          <div className="space-y-6">
+            {/* Download All */}
+            <div className="glass rounded-2xl p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="text-xl font-semibold text-white mb-2">Download Complete Package</h3>
+                  <p className="text-gray-400">Get all files in a single ZIP archive</p>
+                </div>
+                <button
+                  onClick={downloadAllAsZip}
+                  className="px-6 py-3 bg-gradient-to-r from-primary-500 to-accent-500 text-white rounded-xl font-semibold hover:from-primary-600 hover:to-accent-600 transition-all flex items-center gap-2"
+                >
+                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                  </svg>
+                  Download ZIP
+                </button>
+              </div>
             </div>
 
-            <p className="text-gray-400 mb-4">
-              Use this system prompt with ChatGPT, Claude, or any other AI assistant to create an AI that mimics your style.
-            </p>
-
-            <div className="bg-gray-900 rounded-xl p-6 overflow-auto max-h-[600px]">
-              <pre className="text-gray-300 whitespace-pre-wrap text-sm font-mono">
-                {profile.systemPrompt}
-              </pre>
+            {/* Individual Files */}
+            <div className="grid md:grid-cols-2 gap-4">
+              {files.map((file) => (
+                <div key={file.name} className="glass rounded-xl p-5 flex items-center justify-between">
+                  <div className="flex items-center gap-4">
+                    <span className="text-3xl">{file.icon}</span>
+                    <div>
+                      <p className="text-white font-semibold">{file.name}</p>
+                      <p className="text-gray-400 text-sm">{file.description}</p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={file.action}
+                    className="px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-700 transition-colors"
+                  >
+                    Download
+                  </button>
+                </div>
+              ))}
             </div>
 
-            <div className="mt-6 p-4 bg-primary-500/10 border border-primary-500/20 rounded-xl">
-              <h4 className="text-primary-400 font-semibold mb-2">How to use this prompt:</h4>
-              <ol className="text-gray-300 text-sm space-y-2">
-                <li>1. Copy the system prompt above</li>
-                <li>2. Open ChatGPT, Claude, or your preferred AI assistant</li>
-                <li>3. Start a new conversation and paste the prompt as the first message</li>
-                <li>4. Or use it as a "Custom Instructions" or "System Prompt" in API settings</li>
-              </ol>
+            {/* System Prompt Preview */}
+            <div className="glass rounded-2xl p-6">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-semibold text-white">System Prompt Preview</h3>
+                <button
+                  onClick={copySystemPrompt}
+                  className={`px-4 py-2 rounded-lg font-semibold transition-all duration-200 flex items-center gap-2 ${
+                    copied ? 'bg-green-500/20 text-green-400' : 'bg-gray-800 text-white hover:bg-gray-700'
+                  }`}
+                >
+                  {copied ? 'Copied!' : 'Copy'}
+                </button>
+              </div>
+              <div className="bg-gray-900 rounded-xl p-4 overflow-auto max-h-[300px]">
+                <pre className="text-gray-300 whitespace-pre-wrap text-sm font-mono">
+                  {profile.systemPrompt}
+                </pre>
+              </div>
+            </div>
+
+            {/* Usage Instructions */}
+            <div className="glass rounded-2xl p-6">
+              <h3 className="text-lg font-semibold text-white mb-4">How to Use Your Agent</h3>
+              <div className="grid md:grid-cols-3 gap-4">
+                <div className="bg-gray-800/50 rounded-xl p-4">
+                  <h4 className="text-primary-400 font-semibold mb-2">ChatGPT</h4>
+                  <p className="text-gray-400 text-sm">
+                    Go to Settings → Personalization → Custom Instructions and paste the system prompt.
+                  </p>
+                </div>
+                <div className="bg-gray-800/50 rounded-xl p-4">
+                  <h4 className="text-accent-400 font-semibold mb-2">Claude</h4>
+                  <p className="text-gray-400 text-sm">
+                    Create a Project and add the system prompt to Project Instructions.
+                  </p>
+                </div>
+                <div className="bg-gray-800/50 rounded-xl p-4">
+                  <h4 className="text-primary-400 font-semibold mb-2">API</h4>
+                  <p className="text-gray-400 text-sm">
+                    Use as the system message in your OpenAI or Anthropic API calls.
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         )}
