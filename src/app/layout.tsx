@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import './globals.css'
 import { ThemeProvider } from '@/components/theme/ThemeProvider'
+import { Analytics } from '@/components/analytics/Analytics'
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://agent-me.app'
 
@@ -59,6 +60,7 @@ export default function RootLayout({
             {children}
           </div>
         </ThemeProvider>
+        <Analytics />
       </body>
     </html>
   )
