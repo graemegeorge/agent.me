@@ -6,9 +6,12 @@ import { signIn } from 'next-auth/react'
 import Script from 'next/script'
 import { Tooltip } from '@/components/ui/Tooltip'
 import { ThemeToggle } from '@/components/theme/ThemeToggle'
+import { useTheme } from '@/components/theme/ThemeProvider'
 
 export default function Home() {
   const [hoveredFeature, setHoveredFeature] = useState<number | null>(null)
+  const { resolvedTheme } = useTheme()
+  const isDark = resolvedTheme === 'dark'
 
   const features = [
     {
@@ -65,7 +68,13 @@ export default function Home() {
       <section className="relative overflow-hidden">
         {/* Animated background */}
         <div className="absolute inset-0 gradient-bg opacity-20" />
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-gray-950/50 to-gray-950" />
+        <div
+          className={`absolute inset-0 ${
+            isDark
+              ? 'bg-gradient-to-b from-transparent via-gray-950/50 to-gray-950'
+              : 'bg-gradient-to-b from-white/25 via-white/60 to-[#f3f7ff]'
+          }`}
+        />
 
         {/* Floating orbs */}
         <div className="absolute top-20 left-10 w-72 h-72 bg-sky-500/30 rounded-full blur-3xl animate-pulse" />
@@ -73,7 +82,13 @@ export default function Home() {
         <div className="absolute bottom-20 left-1/3 w-64 h-64 bg-sky-400/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '-4s' }} />
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-32">
-          <div className="text-center">
+          <div
+            className={`text-center ${
+              isDark
+                ? ''
+                : 'mx-auto max-w-5xl rounded-3xl border border-white/60 bg-white/45 px-4 py-8 backdrop-blur-md shadow-[0_16px_36px_rgba(148,163,184,0.22)] md:px-8 md:py-10'
+            }`}
+          >
             {/* Logo */}
             <div className="inline-flex items-center justify-center mb-8">
               <div className="relative">
@@ -98,7 +113,9 @@ export default function Home() {
             <h1 className="text-5xl md:text-7xl font-bold mb-6">
               <span
                 style={{
-                  background: 'linear-gradient(to right, #ffffff, #e5e7eb, #9ca3af)',
+                  background: isDark
+                    ? 'linear-gradient(to right, #ffffff, #e5e7eb, #9ca3af)'
+                    : 'linear-gradient(to right, #0b1324, #172554, #334155)',
                   WebkitBackgroundClip: 'text',
                   WebkitTextFillColor: 'transparent',
                   backgroundClip: 'text'
@@ -121,7 +138,7 @@ export default function Home() {
             </h1>
 
             {/* Subheadline */}
-            <p className="text-xl md:text-2xl text-gray-400 max-w-3xl mx-auto mb-12">
+            <p className={`text-xl md:text-2xl max-w-3xl mx-auto mb-12 ${isDark ? 'text-gray-400' : 'text-slate-700'}`}>
               Build a personalized AI agent that understands your work style,
               communication patterns, and expertise. Your digital counterpart, ready to assist.
             </p>
@@ -159,7 +176,7 @@ export default function Home() {
 
             {/* OAuth Sign In Buttons */}
             <div className="flex flex-col items-center gap-4">
-              <p className="text-gray-500 text-sm">Or connect your accounts to get started</p>
+              <p className={`text-sm ${isDark ? 'text-gray-500' : 'text-slate-600'}`}>Or connect your accounts to get started</p>
               <div className="flex gap-4">
                 <Tooltip content="Use your calendar, docs and email style to shape the agent.">
                   <button
