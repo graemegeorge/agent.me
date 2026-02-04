@@ -8,7 +8,7 @@ export default function SignInPage() {
     <main className="min-h-screen bg-gray-950 flex items-center justify-center">
       <div className="max-w-md w-full mx-4">
         <div className="text-center mb-8">
-          <Link href="/" className="inline-block text-3xl font-bold bg-gradient-to-r from-primary-400 to-accent-400 bg-clip-text text-transparent mb-4">
+          <Link href="/" className="inline-block text-3xl font-bold brand-logo mb-4">
             agent.me
           </Link>
           <h1 className="text-2xl font-bold text-white mb-2">Sign in to continue</h1>
@@ -18,7 +18,7 @@ export default function SignInPage() {
         <div className="glass rounded-2xl p-8 space-y-4">
           {/* Google Sign In */}
           <button
-            onClick={() => signIn('google', { callbackUrl: '/analyze' })}
+            onClick={() => signIn('google', { callbackUrl: '/capture' })}
             className="w-full flex items-center justify-center gap-3 px-6 py-4 bg-white text-gray-900 rounded-xl font-semibold hover:bg-gray-100 transition-colors"
           >
             <svg className="w-5 h-5" viewBox="0 0 24 24">
@@ -44,7 +44,7 @@ export default function SignInPage() {
 
           {/* GitHub Sign In */}
           <button
-            onClick={() => signIn('github', { callbackUrl: '/analyze' })}
+            onClick={() => signIn('github', { callbackUrl: '/capture' })}
             className="w-full flex items-center justify-center gap-3 px-6 py-4 bg-gray-800 text-white rounded-xl font-semibold hover:bg-gray-700 transition-colors border border-gray-700"
           >
             <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">

@@ -2,6 +2,8 @@
 
 import Link from 'next/link'
 import { useState } from 'react'
+import { signIn } from 'next-auth/react'
+import { Tooltip } from '@/components/ui/Tooltip'
 
 export default function Home() {
   const [hoveredFeature, setHoveredFeature] = useState<number | null>(null)
@@ -98,69 +100,77 @@ export default function Home() {
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
-              <Link
-                href="/analyze"
-                className="group relative inline-flex items-center justify-center px-8 py-4 text-lg font-semibold rounded-xl overflow-hidden transition-all duration-300 hover:scale-105 bg-gradient-to-r from-sky-500 to-fuchsia-500 hover:from-sky-600 hover:to-fuchsia-600"
-              >
-                <span className="relative text-white flex items-center gap-2">
-                  Upload ChatGPT Export
-                  <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                  </svg>
-                </span>
-              </Link>
+              <Tooltip content="The most in depth analysis of your conversational personality.">
+                <Link
+                  href="/analyze"
+                  className="group relative inline-flex items-center justify-center px-8 py-4 text-lg font-semibold rounded-xl overflow-hidden transition-all duration-300 hover:scale-105 bg-gradient-to-r from-sky-500 to-fuchsia-500 hover:from-sky-600 hover:to-fuchsia-600"
+                >
+                  <span className="relative text-white flex items-center gap-2">
+                    Upload ChatGPT Export
+                    <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                    </svg>
+                  </span>
+                </Link>
+              </Tooltip>
 
-              <Link
-                href="/questionnaire"
-                className="group relative inline-flex items-center justify-center px-8 py-4 text-lg font-semibold rounded-xl overflow-hidden transition-all duration-300 hover:scale-105 bg-gray-800 border border-gray-700 hover:bg-gray-700"
-              >
-                <span className="relative text-white flex items-center gap-2">
-                  Take the Questionnaire
-                  <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                </span>
-              </Link>
+              <Tooltip content="Shape the agent in a way you prefer.">
+                <Link
+                  href="/questionnaire"
+                  className="group relative inline-flex items-center justify-center px-8 py-4 text-lg font-semibold rounded-xl overflow-hidden transition-all duration-300 hover:scale-105 bg-gray-800 border border-gray-700 hover:bg-gray-700"
+                >
+                  <span className="relative text-white flex items-center gap-2">
+                    Take the Questionnaire
+                    <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </span>
+                </Link>
+              </Tooltip>
             </div>
 
             {/* OAuth Sign In Buttons */}
             <div className="flex flex-col items-center gap-4">
               <p className="text-gray-500 text-sm">Or connect your accounts to get started</p>
               <div className="flex gap-4">
-                <Link
-                  href="/auth/signin"
-                  className="flex items-center gap-3 px-6 py-3 bg-white text-gray-900 rounded-xl font-semibold hover:bg-gray-100 transition-all duration-300 hover:scale-105"
-                >
-                  <svg className="w-5 h-5" viewBox="0 0 24 24">
-                    <path
-                      fill="#4285F4"
-                      d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
-                    />
-                    <path
-                      fill="#34A853"
-                      d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
-                    />
-                    <path
-                      fill="#FBBC05"
-                      d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
-                    />
-                    <path
-                      fill="#EA4335"
-                      d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
-                    />
-                  </svg>
-                  Sign in with Google
-                </Link>
+                <Tooltip content="Use your calendar, docs and email style to shape the agent.">
+                  <button
+                    onClick={() => signIn('google', { callbackUrl: '/capture' })}
+                    className="flex items-center gap-3 px-6 py-3 bg-white text-gray-900 rounded-xl font-semibold hover:bg-gray-100 transition-all duration-300 hover:scale-105"
+                  >
+                    <svg className="w-5 h-5" viewBox="0 0 24 24">
+                      <path
+                        fill="#4285F4"
+                        d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+                      />
+                      <path
+                        fill="#34A853"
+                        d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+                      />
+                      <path
+                        fill="#FBBC05"
+                        d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
+                      />
+                      <path
+                        fill="#EA4335"
+                        d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+                      />
+                    </svg>
+                    Sign in with Google
+                  </button>
+                </Tooltip>
 
-                <Link
-                  href="/auth/signin"
-                  className="flex items-center gap-3 px-6 py-3 bg-gray-800 text-white rounded-xl font-semibold hover:bg-gray-700 transition-all duration-300 hover:scale-105 border border-gray-700"
-                >
-                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
-                  </svg>
-                  Sign in with GitHub
-                </Link>
+                <Tooltip content="Use your code review style, comments and coding interests to shape the agent.">
+                  <button
+                    onClick={() => signIn('github', { callbackUrl: '/capture' })}
+                    className="flex items-center gap-3 px-6 py-3 bg-gray-800 text-white rounded-xl font-semibold hover:bg-gray-700 transition-all duration-300 hover:scale-105 border border-gray-700"
+                  >
+                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                    </svg>
+                    Sign in with GitHub
+                  </button>
+                </Tooltip>
               </div>
             </div>
           </div>
@@ -198,6 +208,52 @@ export default function Home() {
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* What's it for? */}
+      <section className="relative py-24 bg-gray-950">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-14">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-white">
+              What's it for?
+            </h2>
+            <p className="text-gray-400 text-lg max-w-3xl mx-auto">
+              Turn your exported profile files and system prompts into practical help for real work,
+              whether you write code every day or never touch it.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            <div className="glass rounded-2xl p-6 border border-gray-800">
+              <h3 className="text-xl font-semibold text-white mb-3">For non-technical work</h3>
+              <ul className="space-y-3 text-gray-300">
+                <li>Write emails, proposals, and docs in your voice even when you're busy.</li>
+                <li>Prep for meetings faster with summaries and talking points that sound like you.</li>
+                <li>Delegate repetitive writing and admin tasks without losing quality or tone.</li>
+                <li>Onboard new teammates with clear "how I work" guidance from your profile.</li>
+              </ul>
+            </div>
+
+            <div className="glass rounded-2xl p-6 border border-gray-800">
+              <h3 className="text-xl font-semibold text-white mb-3">For technical work</h3>
+              <ul className="space-y-3 text-gray-300">
+                <li>Generate PR descriptions, issue breakdowns, and implementation plans faster.</li>
+                <li>Reuse your system prompt in IDE assistants for more consistent code support.</li>
+                <li>Draft architecture notes and tradeoff analysis in your normal decision style.</li>
+                <li>Create support agents for docs and triage with your preferred level of detail.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="mt-6 glass rounded-2xl p-6 border border-primary-500/20">
+            <h3 className="text-xl font-semibold text-white mb-3">Why the exportables matter</h3>
+            <p className="text-gray-300">
+              The downloadable files (like <code>AGENT.md</code>, <code>SKILLS.md</code>, and <code>SYSTEM_PROMPT.md</code>)
+              give you portable building blocks you can plug into ChatGPT, Claude, custom GPTs, internal tools,
+              or team workflows so your assistant stays consistent wherever you use it.
+            </p>
           </div>
         </div>
       </section>
@@ -317,6 +373,17 @@ export default function Home() {
             <p className="text-gray-500 text-sm">
               Built with privacy in mind. Your data stays yours.
             </p>
+            <a
+              href="https://github.com/graemegeorge/agent.me"
+              target="_blank"
+              rel="noreferrer"
+              aria-label="View the agent.me repository on GitHub"
+              className="text-gray-400 hover:text-white transition-colors"
+            >
+              <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 0C5.373 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.565 21.8 24 17.302 24 12c0-6.627-5.373-12-12-12z" />
+              </svg>
+            </a>
           </div>
         </div>
       </footer>
