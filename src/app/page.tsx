@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { useState } from 'react'
 import { signIn } from 'next-auth/react'
+import Script from 'next/script'
 import { Tooltip } from '@/components/ui/Tooltip'
 
 export default function Home() {
@@ -33,6 +34,29 @@ export default function Home() {
 
   return (
     <main className="min-h-screen">
+      <Script
+        id="software-application-jsonld"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'SoftwareApplication',
+            name: 'agent-me.app',
+            applicationCategory: 'BusinessApplication',
+            operatingSystem: 'Web',
+            description: 'Create a personalized AI assistant based on your communication style, work habits, and goals.',
+            offers: {
+              '@type': 'Offer',
+              price: '0',
+              priceCurrency: 'USD',
+            },
+            audience: {
+              '@type': 'Audience',
+              audienceType: 'Developers, founders, managers, creators, and knowledge workers',
+            },
+          }),
+        }}
+      />
       {/* Hero Section */}
       <section className="relative overflow-hidden">
         {/* Animated background */}
