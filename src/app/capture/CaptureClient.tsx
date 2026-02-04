@@ -43,9 +43,11 @@ export default function CaptureClient({ name, email, image, provider }: CaptureC
           <Link href="/" className="text-2xl font-bold brand-logo">
             agent-me.app
           </Link>
-          <Link href="/analyze" className="text-gray-400 hover:text-white transition-colors">
-            Upload export instead →
-          </Link>
+          <nav aria-label="Capture page">
+            <Link href="/analyze" className="text-gray-400 hover:text-white transition-colors">
+              Upload export instead →
+            </Link>
+          </nav>
         </div>
       </header>
 

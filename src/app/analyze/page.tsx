@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useRef } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { ChatGPTExport, AnalysisProgress, AgentProfile } from '@/types'
@@ -13,6 +13,7 @@ export default function AnalyzePage() {
   const [error, setError] = useState<string | null>(null)
   const [progress, setProgress] = useState<AnalysisProgress | null>(null)
   const [profile, setProfile] = useState<AgentProfile | null>(null)
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   const handleDragOver = useCallback((e: React.DragEvent) => {
     e.preventDefault()
@@ -111,6 +112,8 @@ export default function AnalyzePage() {
     }
   }
 
+  const openFilePicker = () => fileInputRef.current?.click()
+
   return (
     <main className="min-h-screen bg-gray-950">
       {/* Header */}
@@ -120,9 +123,11 @@ export default function AnalyzePage() {
             <Link href="/" className="text-2xl font-bold brand-logo">
               agent-me.app
             </Link>
-            <Link href="/questionnaire" className="text-gray-400 hover:text-white transition-colors">
-              Or take the questionnaire →
-            </Link>
+            <nav aria-label="Analyze page">
+              <Link href="/questionnaire" className="text-gray-400 hover:text-white transition-colors">
+                Or take the questionnaire →
+              </Link>
+            </nav>
           </div>
         </div>
       </header>
@@ -154,13 +159,26 @@ export default function AnalyzePage() {
             onDragOver={handleDragOver}
             onDragLeave={handleDragLeave}
             onDrop={handleDrop}
-            onClick={() => document.getElementById('fileInput')?.click()}
+            onClick={openFilePicker}
+            onKeyDown={(event) => {
+              if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault()
+                openFilePicker()
+              }
+            }}
+            role="button"
+            tabIndex={0}
+            aria-describedby="upload-file-help"
           >
+            <label htmlFor="fileInput" className="sr-only">
+              Upload ChatGPT conversations JSON file
+            </label>
             <input
               type="file"
               id="fileInput"
               accept=".json"
               onChange={handleFileSelect}
+              ref={fileInputRef}
               className="hidden"
             />
 
@@ -184,6 +202,9 @@ export default function AnalyzePage() {
                 >
                   Choose a different file
                 </button>
+                <p id="upload-file-help" className="sr-only">
+                  Press Enter or Space to choose a different file.
+                </p>
               </div>
             ) : (
               <div className="space-y-4">
@@ -194,7 +215,9 @@ export default function AnalyzePage() {
                 </div>
                 <div>
                   <p className="text-white font-semibold">Drop your conversations.json file here</p>
-                  <p className="text-gray-400 text-sm">or click to browse</p>
+                  <p id="upload-file-help" className="text-gray-400 text-sm">
+                    or click, press Enter, or press Space to browse
+                  </p>
                 </div>
               </div>
             )}

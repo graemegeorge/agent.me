@@ -120,6 +120,9 @@ export default function ProfilePage() {
     { name: 'profile.json', description: 'Raw profile data', icon: '📊', action: downloadProfileJson },
   ]
 
+  const tabPanelId = (tab: 'overview' | 'personality' | 'files') => `${tab}-panel`
+  const tabId = (tab: 'overview' | 'personality' | 'files') => `${tab}-tab`
+
   return (
     <main className="min-h-screen bg-gray-950">
       {/* Header */}
@@ -129,7 +132,7 @@ export default function ProfilePage() {
             <Link href="/" className="text-2xl font-bold brand-logo">
               agent-me.app
             </Link>
-            <div className="flex gap-3">
+            <nav aria-label="Profile actions" className="flex gap-3">
               <Link
                 href="/chat"
                 className="px-4 py-2 bg-gradient-to-r from-primary-500 to-accent-500 text-white rounded-lg font-semibold hover:from-primary-600 hover:to-accent-600 transition-all flex items-center gap-2"
@@ -142,7 +145,7 @@ export default function ProfilePage() {
               <Link href="/" className="px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-700 transition-colors">
                 Create New
               </Link>
-            </div>
+            </nav>
           </div>
         </div>
       </header>
@@ -204,11 +207,15 @@ export default function ProfilePage() {
         </div>
 
         {/* Tabs */}
-        <div className="flex justify-center gap-4 mb-8">
+        <div className="flex justify-center gap-4 mb-8" role="tablist" aria-label="Profile sections">
           {(['overview', 'personality', 'files'] as const).map((tab) => (
             <button
+              id={tabId(tab)}
               key={tab}
               onClick={() => setActiveTab(tab)}
+              role="tab"
+              aria-selected={activeTab === tab}
+              aria-controls={tabPanelId(tab)}
               className={`
                 px-6 py-3 rounded-xl font-semibold transition-all duration-200
                 ${activeTab === tab
@@ -224,7 +231,12 @@ export default function ProfilePage() {
 
         {/* Overview Tab */}
         {activeTab === 'overview' && (
-          <div className="grid md:grid-cols-2 gap-6">
+          <div
+            id={tabPanelId('overview')}
+            role="tabpanel"
+            aria-labelledby={tabId('overview')}
+            className="grid md:grid-cols-2 gap-6"
+          >
             {/* Personality Summary */}
             <div className="glass rounded-2xl p-6">
               <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
@@ -323,7 +335,12 @@ export default function ProfilePage() {
 
         {/* Personality Tab */}
         {activeTab === 'personality' && (
-          <div className="glass rounded-2xl p-8">
+          <div
+            id={tabPanelId('personality')}
+            role="tabpanel"
+            aria-labelledby={tabId('personality')}
+            className="glass rounded-2xl p-8"
+          >
             <h3 className="text-xl font-semibold text-white mb-6">Detailed Personality Analysis</h3>
 
             <div className="space-y-8">
@@ -377,7 +394,12 @@ export default function ProfilePage() {
 
         {/* Files Tab */}
         {activeTab === 'files' && (
-          <div className="space-y-6">
+          <div
+            id={tabPanelId('files')}
+            role="tabpanel"
+            aria-labelledby={tabId('files')}
+            className="space-y-6"
+          >
             {/* Download All */}
             <div className="glass rounded-2xl p-6">
               <div className="flex items-center justify-between">

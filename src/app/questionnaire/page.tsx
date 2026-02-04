@@ -167,6 +167,7 @@ export default function QuestionnairePage() {
 
   const question = questions[currentQuestion]
   const progress = ((currentQuestion + 1) / questions.length) * 100
+  const questionInputId = `question-${question.id}`
 
   const handleTextInput = (value: string) => {
     setResponses({ ...responses, [question.id]: value })
@@ -247,9 +248,11 @@ export default function QuestionnairePage() {
             <Link href="/" className="text-2xl font-bold brand-logo">
               agent-me.app
             </Link>
-            <Link href="/analyze" className="text-gray-400 hover:text-white transition-colors">
-              Or upload ChatGPT export →
-            </Link>
+            <nav aria-label="Questionnaire page">
+              <Link href="/analyze" className="text-gray-400 hover:text-white transition-colors">
+                Or upload ChatGPT export →
+              </Link>
+            </nav>
           </div>
         </div>
       </header>
@@ -275,33 +278,48 @@ export default function QuestionnairePage() {
 
           {/* Text Input */}
           {question.type === 'text' && (
-            <input
-              type="text"
-              value={(responses[question.id] as string) || ''}
-              onChange={(e) => handleTextInput(e.target.value)}
-              placeholder={question.placeholder}
-              className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-primary-500 transition-colors"
-            />
+            <>
+              <label htmlFor={questionInputId} className="sr-only">
+                {question.question}
+              </label>
+              <input
+                id={questionInputId}
+                type="text"
+                value={(responses[question.id] as string) || ''}
+                onChange={(e) => handleTextInput(e.target.value)}
+                placeholder={question.placeholder}
+                className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-primary-500 transition-colors"
+              />
+            </>
           )}
 
           {/* Textarea */}
           {question.type === 'textarea' && (
-            <textarea
-              value={(responses[question.id] as string) || ''}
-              onChange={(e) => handleTextInput(e.target.value)}
-              placeholder={question.placeholder}
-              rows={4}
-              className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-primary-500 transition-colors resize-none"
-            />
+            <>
+              <label htmlFor={questionInputId} className="sr-only">
+                {question.question}
+              </label>
+              <textarea
+                id={questionInputId}
+                value={(responses[question.id] as string) || ''}
+                onChange={(e) => handleTextInput(e.target.value)}
+                placeholder={question.placeholder}
+                rows={4}
+                className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-primary-500 transition-colors resize-none"
+              />
+            </>
           )}
 
           {/* Select */}
           {question.type === 'select' && (
-            <div className="space-y-3">
+            <div className="space-y-3" role="radiogroup" aria-label={question.question}>
               {question.options?.map((option) => (
                 <button
+                  type="button"
                   key={option}
                   onClick={() => handleSelectInput(option)}
+                  role="radio"
+                  aria-checked={responses[question.id] === option}
                   className={`
                     w-full px-4 py-3 rounded-xl text-left transition-all duration-200
                     ${responses[question.id] === option
@@ -319,13 +337,15 @@ export default function QuestionnairePage() {
 
           {/* Multi-select */}
           {question.type === 'multiselect' && (
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-2 gap-3" role="group" aria-label={question.question}>
               {question.options?.map((option) => {
                 const selected = ((responses[question.id] as string[]) || []).includes(option)
                 return (
                   <button
+                    type="button"
                     key={option}
                     onClick={() => handleMultiSelectInput(option)}
+                    aria-pressed={selected}
                     className={`
                       px-4 py-3 rounded-xl text-left transition-all duration-200
                       ${selected

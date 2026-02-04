@@ -22,6 +22,7 @@ export default function ChatPage() {
   const [showApiKeyModal, setShowApiKeyModal] = useState(false)
   const [selectedProvider, setSelectedProvider] = useState<'openai' | 'anthropic'>('openai')
   const messagesEndRef = useRef<HTMLDivElement>(null)
+  const apiKeyInputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     const stored = localStorage.getItem('agentProfile')
@@ -50,6 +51,21 @@ export default function ChatPage() {
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages])
+
+  useEffect(() => {
+    if (!showApiKeyModal) return
+
+    apiKeyInputRef.current?.focus()
+
+    const onEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setShowApiKeyModal(false)
+      }
+    }
+
+    window.addEventListener('keydown', onEscape)
+    return () => window.removeEventListener('keydown', onEscape)
+  }, [showApiKeyModal])
 
   const saveApiKey = () => {
     localStorage.setItem('aiApiKey', apiKey)
@@ -147,7 +163,7 @@ export default function ChatPage() {
               <span className="text-gray-600">|</span>
               <span className="text-gray-400">Chat with Your Agent</span>
             </div>
-            <div className="flex gap-3">
+            <nav aria-label="Chat actions" className="flex gap-3">
               <button
                 onClick={() => setShowApiKeyModal(true)}
                 className="px-4 py-2 text-gray-400 hover:text-white transition-colors flex items-center gap-2"
@@ -160,7 +176,7 @@ export default function ChatPage() {
               <Link href="/profile" className="px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-700 transition-colors">
                 Back to Profile
               </Link>
-            </div>
+            </nav>
           </div>
         </div>
       </header>
@@ -228,6 +244,8 @@ export default function ChatPage() {
         <div className="flex-shrink-0">
           <div className="flex gap-3">
             <textarea
+              id="chat-message-input"
+              aria-label="Type your message"
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
@@ -252,15 +270,28 @@ export default function ChatPage() {
       {/* API Key Modal */}
       {showApiKeyModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-gray-900 rounded-2xl p-6 max-w-md w-full border border-gray-800">
-            <h3 className="text-xl font-semibold text-white mb-4">Configure AI Provider</h3>
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="api-modal-title"
+            aria-describedby="api-modal-description"
+            className="bg-gray-900 rounded-2xl p-6 max-w-md w-full border border-gray-800"
+          >
+            <h3 id="api-modal-title" className="text-xl font-semibold text-white mb-4">
+              Configure AI Provider
+            </h3>
 
             <div className="space-y-4">
               <div>
-                <label className="block text-sm text-gray-400 mb-2">Provider</label>
+                <p className="block text-sm text-gray-400 mb-2" id="provider-label">
+                  Provider
+                </p>
                 <div className="flex gap-3">
                   <button
+                    type="button"
                     onClick={() => setSelectedProvider('openai')}
+                    aria-labelledby="provider-label"
+                    aria-pressed={selectedProvider === 'openai'}
                     className={`flex-1 px-4 py-3 rounded-lg border transition-all ${
                       selectedProvider === 'openai'
                         ? 'border-primary-500 bg-primary-500/10 text-white'
@@ -270,7 +301,10 @@ export default function ChatPage() {
                     OpenAI
                   </button>
                   <button
+                    type="button"
                     onClick={() => setSelectedProvider('anthropic')}
+                    aria-labelledby="provider-label"
+                    aria-pressed={selectedProvider === 'anthropic'}
                     className={`flex-1 px-4 py-3 rounded-lg border transition-all ${
                       selectedProvider === 'anthropic'
                         ? 'border-primary-500 bg-primary-500/10 text-white'
@@ -283,9 +317,13 @@ export default function ChatPage() {
               </div>
 
               <div>
-                <label className="block text-sm text-gray-400 mb-2">API Key</label>
+                <label htmlFor="provider-api-key" className="block text-sm text-gray-400 mb-2">
+                  API Key
+                </label>
                 <input
+                  id="provider-api-key"
                   type="password"
+                  ref={apiKeyInputRef}
                   value={apiKey}
                   onChange={(e) => setApiKey(e.target.value)}
                   placeholder={selectedProvider === 'openai' ? 'sk-...' : 'sk-ant-...'}
@@ -293,7 +331,7 @@ export default function ChatPage() {
                 />
               </div>
 
-              <p className="text-xs text-gray-500">
+              <p id="api-modal-description" className="text-xs text-gray-500">
                 Your API key is stored locally in your browser and sent directly to {selectedProvider === 'openai' ? 'OpenAI' : 'Anthropic'}. We never see or store your key.
               </p>
 
