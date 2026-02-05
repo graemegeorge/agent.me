@@ -28,11 +28,11 @@ function applyTheme(theme: ThemeMode): 'light' | 'dark' {
 }
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setThemeState] = useState<ThemeMode>('system')
-  const [resolvedTheme, setResolvedTheme] = useState<'light' | 'dark'>('dark')
+  const [theme, setThemeState] = useState<ThemeMode>('light')
+  const [resolvedTheme, setResolvedTheme] = useState<'light' | 'dark'>('light')
 
   useEffect(() => {
-    const savedTheme = (localStorage.getItem(THEME_STORAGE_KEY) as ThemeMode | null) || 'system'
+    const savedTheme = (localStorage.getItem(THEME_STORAGE_KEY) as ThemeMode | null) || 'light'
     setThemeState(savedTheme)
     setResolvedTheme(applyTheme(savedTheme))
   }, [])

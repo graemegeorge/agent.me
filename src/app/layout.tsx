@@ -48,7 +48,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className="font-sans bg-app text-app min-h-screen antialiased">
+      <body className="bg-app text-app min-h-screen antialiased">
         <a
           href="#main-content"
           className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-surface focus:px-4 focus:py-2 focus:text-app focus:outline-none focus:ring-2 focus:ring-primary-400"

@@ -43,7 +43,6 @@ export default function ChatPage() {
       router.push('/')
     }
 
-    // Load saved API key
     const savedKey = localStorage.getItem('aiApiKey')
     const savedProvider = localStorage.getItem('aiProvider') as 'openai' | 'anthropic'
     if (savedKey) setApiKey(savedKey)
@@ -147,93 +146,74 @@ export default function ChatPage() {
   if (!profile) {
     return (
       <main className="min-h-screen bg-app text-app flex items-center justify-center">
-        <div className="animate-spin w-8 h-8 border-2 border-primary-500 border-t-transparent rounded-full" />
+        <div className="frame p-6">
+          <p className="text-sm text-muted">Loading chat…</p>
+        </div>
       </main>
     )
   }
 
   return (
     <main className="min-h-screen bg-app text-app flex flex-col">
-      {/* Header */}
-      <header className="border-b border-gray-800 flex-shrink-0">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-3 md:py-4">
-          <div className="flex items-center justify-between gap-3">
-            <div className="flex items-center gap-2 md:gap-4">
-              <Link href="/" className="text-2xl font-bold brand-logo">
-                agent-me.app
-              </Link>
-              <span className="hidden sm:inline text-gray-600">|</span>
-              <span className="hidden sm:inline text-gray-400">Chat with Your Agent</span>
-            </div>
-            <nav aria-label="Chat actions" className="flex gap-2 md:gap-3 items-center">
-              <button
-                onClick={() => setShowApiKeyModal(true)}
-                className="px-2.5 py-2 md:px-4 text-gray-400 hover:text-white transition-colors flex items-center gap-2 text-sm md:text-base"
-              >
-                <KeyRound className="h-4 w-4" />
-                <span className="hidden sm:inline">API Key</span>
-              </button>
-              <Link href="/profile" className="px-3 py-2 md:px-4 bg-gray-800 text-white rounded-lg hover:bg-gray-700 transition-colors text-sm md:text-base">
-                <span className="hidden sm:inline">Back to Profile</span>
-                <span className="sm:hidden">Profile</span>
-              </Link>
-              <ThemeToggle />
-            </nav>
+      <header className="rule-strong flex-shrink-0">
+        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-6 sm:px-6 lg:px-8">
+          <div className="flex items-center gap-3">
+            <Link href="/" className="text-sm font-semibold uppercase tracking-[0.28em]">agent-me.app</Link>
+            <span className="hidden sm:inline text-xs uppercase tracking-[0.2em] text-muted">Chat</span>
           </div>
+          <nav aria-label="Chat actions" className="flex items-center gap-3 text-xs uppercase tracking-[0.2em]">
+            <button
+              onClick={() => setShowApiKeyModal(true)}
+              className="btn-secondary px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em]"
+            >
+              <span className="inline-flex items-center gap-2">
+                <KeyRound className="h-4 w-4" /> API Key
+              </span>
+            </button>
+            <Link href="/profile" className="btn-secondary px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em]">
+              Profile
+            </Link>
+            <ThemeToggle />
+          </nav>
         </div>
       </header>
 
-      {/* Chat Area */}
-      <div className="flex-1 overflow-hidden flex flex-col max-w-5xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-4 md:py-6">
-        {/* Messages */}
-        <div className="flex-1 overflow-y-auto space-y-4 mb-4">
+      <div className="flex-1 mx-auto flex w-full max-w-6xl flex-col px-4 py-6 sm:px-6 lg:px-8">
+        <div className="flex-1 overflow-y-auto space-y-4 border border-app p-4">
           {messages.length === 0 && (
-            <div className="text-center py-8 md:py-12">
-              <div className="w-14 h-14 md:w-16 md:h-16 mx-auto mb-4 bg-gradient-to-r from-primary-500/20 to-accent-500/20 rounded-full flex items-center justify-center">
-                <Bot className="h-7 w-7 md:h-8 md:w-8 text-primary-300" />
+            <div className="text-center py-8">
+              <div className="mx-auto flex h-10 w-10 items-center justify-center border border-app">
+                <Bot className="h-5 w-5" />
               </div>
-              <h2 className="text-xl font-semibold text-white mb-2">Chat with Your AI Agent</h2>
-              <p className="text-gray-400 max-w-md mx-auto">
-                Your agent is configured with your personality profile. Start a conversation to see how it responds like you!
+              <h2 className="mt-4 text-lg font-semibold">Chat with your AI agent.</h2>
+              <p className="mt-2 text-sm text-muted-strong max-w-md mx-auto">
+                Your agent is configured with your personality profile. Start a conversation to see how it responds like you.
               </p>
               {!apiKey && (
                 <button
                   onClick={() => setShowApiKeyModal(true)}
-                  className="mt-4 px-6 py-3 bg-gradient-to-r from-primary-500 to-accent-500 text-white rounded-lg font-semibold hover:from-primary-600 hover:to-accent-600 transition-all"
+                  className="btn-primary mt-4 inline-flex w-full items-center justify-center px-6 py-3 text-xs font-semibold uppercase tracking-[0.22em] sm:w-auto"
                 >
-                  Set Up API Key to Start
+                  Set up API key
                 </button>
               )}
             </div>
           )}
 
           {messages.map((message) => (
-            <div
-              key={message.id}
-              className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
-            >
-              <div
-                className={`max-w-[80%] rounded-2xl px-4 py-3 ${
-                  message.role === 'user'
-                    ? 'bg-gradient-to-r from-primary-500 to-accent-500 text-white'
-                    : 'bg-gray-800 text-gray-100'
-                }`}
-              >
+            <div key={message.id} className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+              <div className={`max-w-[80%] border border-app px-4 py-3 text-sm ${message.role === 'user' ? 'bg-surface-strong' : 'bg-surface'}`}>
                 <p className="whitespace-pre-wrap">{message.content}</p>
-                <p className={`text-xs mt-1 ${message.role === 'user' ? 'text-white/60' : 'text-gray-500'}`}>
-                  {message.timestamp.toLocaleTimeString()}
-                </p>
+                <p className="mt-2 text-xs text-muted">{message.timestamp.toLocaleTimeString()}</p>
               </div>
             </div>
           ))}
 
           {isLoading && (
             <div className="flex justify-start">
-              <div className="bg-gray-800 rounded-2xl px-4 py-3">
-                <div className="flex gap-1">
-                  <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                  <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                  <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+              <div className="border border-app px-4 py-3">
+                <div className="flex gap-1 text-muted">
+                  <span>…</span>
                 </div>
               </div>
             </div>
@@ -242,9 +222,8 @@ export default function ChatPage() {
           <div ref={messagesEndRef} />
         </div>
 
-        {/* Input Area */}
-        <div className="flex-shrink-0">
-          <div className="flex gap-3">
+        <div className="mt-4">
+          <div className="flex flex-col gap-3 sm:flex-row">
             <textarea
               id="chat-message-input"
               aria-label="Type your message"
@@ -252,53 +231,44 @@ export default function ChatPage() {
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
               placeholder="Type a message..."
-              rows={1}
-              className="flex-1 px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-primary-500 transition-colors resize-none"
+              rows={2}
+              className="flex-1 border border-strong bg-app px-4 py-3 text-sm focus:outline-none"
             />
             <button
               onClick={sendMessage}
               disabled={!input.trim() || isLoading}
-              className="px-6 py-3 bg-gradient-to-r from-primary-500 to-accent-500 text-white rounded-xl font-semibold hover:from-primary-600 hover:to-accent-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+              className="btn-primary w-full px-6 py-3 text-xs font-semibold uppercase tracking-[0.22em] sm:w-auto disabled:opacity-40 disabled:cursor-not-allowed"
             >
               Send
             </button>
           </div>
-          <p className="text-xs text-gray-500 mt-2 text-center">
+          <p className="mt-2 text-xs text-muted text-center">
             Your API key is stored locally and never sent to our servers.
           </p>
         </div>
       </div>
 
-      {/* API Key Modal */}
       {showApiKeyModal && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
           <div
             role="dialog"
             aria-modal="true"
             aria-labelledby="api-modal-title"
             aria-describedby="api-modal-description"
-            className="bg-gray-900 rounded-2xl p-6 max-w-md w-full border border-gray-800"
+            className="bg-app border border-app p-6 w-full max-w-md"
           >
-            <h3 id="api-modal-title" className="text-xl font-semibold text-white mb-4">
-              Configure AI Provider
-            </h3>
+            <h3 id="api-modal-title" className="text-lg font-semibold">Configure AI provider</h3>
 
-            <div className="space-y-4">
+            <div className="mt-4 space-y-4 text-sm">
               <div>
-                <p className="block text-sm text-gray-400 mb-2" id="provider-label">
-                  Provider
-                </p>
-                <div className="flex gap-3">
+                <p className="text-xs uppercase tracking-[0.2em] text-muted" id="provider-label">Provider</p>
+                <div className="mt-2 flex gap-3">
                   <button
                     type="button"
                     onClick={() => setSelectedProvider('openai')}
                     aria-labelledby="provider-label"
                     aria-pressed={selectedProvider === 'openai'}
-                    className={`flex-1 px-4 py-3 rounded-lg border transition-all ${
-                      selectedProvider === 'openai'
-                        ? 'border-primary-500 bg-primary-500/10 text-white'
-                        : 'border-gray-700 text-gray-400 hover:border-gray-600'
-                    }`}
+                    className={`flex-1 border px-4 py-3 text-xs uppercase tracking-[0.2em] ${selectedProvider === 'openai' ? 'border-strong' : 'border-app text-muted'}`}
                   >
                     OpenAI
                   </button>
@@ -307,11 +277,7 @@ export default function ChatPage() {
                     onClick={() => setSelectedProvider('anthropic')}
                     aria-labelledby="provider-label"
                     aria-pressed={selectedProvider === 'anthropic'}
-                    className={`flex-1 px-4 py-3 rounded-lg border transition-all ${
-                      selectedProvider === 'anthropic'
-                        ? 'border-primary-500 bg-primary-500/10 text-white'
-                        : 'border-gray-700 text-gray-400 hover:border-gray-600'
-                    }`}
+                    className={`flex-1 border px-4 py-3 text-xs uppercase tracking-[0.2em] ${selectedProvider === 'anthropic' ? 'border-strong' : 'border-app text-muted'}`}
                   >
                     Anthropic
                   </button>
@@ -319,7 +285,7 @@ export default function ChatPage() {
               </div>
 
               <div>
-                <label htmlFor="provider-api-key" className="block text-sm text-gray-400 mb-2">
+                <label htmlFor="provider-api-key" className="text-xs uppercase tracking-[0.2em] text-muted">
                   API Key
                 </label>
                 <input
@@ -329,25 +295,25 @@ export default function ChatPage() {
                   value={apiKey}
                   onChange={(e) => setApiKey(e.target.value)}
                   placeholder={selectedProvider === 'openai' ? 'sk-...' : 'sk-ant-...'}
-                  className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-primary-500"
+                  className="mt-2 w-full border border-strong bg-app px-4 py-3 text-sm focus:outline-none"
                 />
               </div>
 
-              <p id="api-modal-description" className="text-xs text-gray-500">
-                Your API key is stored locally in your browser and sent directly to {selectedProvider === 'openai' ? 'OpenAI' : 'Anthropic'}. We never see or store your key.
+              <p id="api-modal-description" className="text-xs text-muted">
+                Your API key is stored locally and sent directly to {selectedProvider === 'openai' ? 'OpenAI' : 'Anthropic'}. We never store it.
               </p>
 
-              <div className="flex gap-3 mt-6">
+              <div className="flex flex-col gap-3 sm:flex-row">
                 <button
                   onClick={() => setShowApiKeyModal(false)}
-                  className="flex-1 px-4 py-3 border border-gray-700 text-gray-400 rounded-lg hover:bg-gray-800 transition-colors"
+                  className="btn-secondary w-full px-4 py-3 text-xs font-semibold uppercase tracking-[0.2em] sm:w-auto"
                 >
                   Cancel
                 </button>
                 <button
                   onClick={saveApiKey}
                   disabled={!apiKey}
-                  className="flex-1 px-4 py-3 bg-gradient-to-r from-primary-500 to-accent-500 text-white rounded-lg font-semibold hover:from-primary-600 hover:to-accent-600 transition-all disabled:opacity-50"
+                  className="btn-primary w-full px-4 py-3 text-xs font-semibold uppercase tracking-[0.22em] sm:w-auto disabled:opacity-40"
                 >
                   Save
                 </button>
