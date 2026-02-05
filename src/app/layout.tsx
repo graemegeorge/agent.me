@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import Script from 'next/script'
 import './globals.css'
 import { ThemeProvider } from '@/components/theme/ThemeProvider'
 import { Analytics } from '@/components/analytics/Analytics'
@@ -47,8 +48,15 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" className="light" suppressHydrationWarning>
       <body className="bg-app text-app min-h-screen antialiased">
+        <Script
+          id="theme-init"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem('agent-me-theme')||'light';var r=document.documentElement;r.classList.remove('light','dark');if(t==='system'){var m=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';t=m;}if(t==='dark'){r.classList.add('dark');r.dataset.theme='dark';}else{r.classList.add('light');r.dataset.theme='light';}}catch(e){document.documentElement.classList.add('light');document.documentElement.dataset.theme='light';}})();`,
+          }}
+        />
         <a
           href="#main-content"
           className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-surface focus:px-4 focus:py-2 focus:text-app focus:outline-none focus:ring-2 focus:ring-primary-400"

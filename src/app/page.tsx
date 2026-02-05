@@ -6,6 +6,7 @@ import { signIn } from 'next-auth/react'
 import { ArrowRight, ClipboardList, Link2, MessagesSquare, Sparkles } from 'lucide-react'
 import { Tooltip } from '@/components/ui/Tooltip'
 import { ThemeToggle } from '@/components/theme/ThemeToggle'
+import { AppHeader } from '@/components/layout/AppHeader'
 
 export default function Home() {
   const features = [
@@ -61,16 +62,15 @@ export default function Home() {
         <ThemeToggle />
       </div>
 
-      <header className="rule-strong">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-6 sm:px-6 lg:px-8">
-          <span className="text-sm font-semibold uppercase tracking-[0.28em]">agent-me.app</span>
-          <nav className="flex items-center gap-6 text-xs uppercase tracking-[0.2em]">
+      <AppHeader
+        nav={
+          <>
             <a href="#method" className="hover:text-accent">Method</a>
             <a href="#uses" className="hover:text-accent">Use Cases</a>
             <a href="#exportables" className="hover:text-accent">Exportables</a>
-          </nav>
-        </div>
-      </header>
+          </>
+        }
+      />
 
       <section className="border-b border-strong">
         <div className="mx-auto grid max-w-7xl gap-10 px-4 py-16 sm:px-6 lg:grid-cols-12 lg:px-8 lg:py-24">

@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 import { AgentProfile } from '@/types'
 import { ThemeToggle } from '@/components/theme/ThemeToggle'
 import { Bot, KeyRound } from 'lucide-react'
+import { AppHeader } from '@/components/layout/AppHeader'
 
 interface Message {
   id: string
@@ -155,13 +156,9 @@ export default function ChatPage() {
 
   return (
     <main className="min-h-screen bg-app text-app flex flex-col">
-      <header className="rule-strong flex-shrink-0">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-6 sm:px-6 lg:px-8">
-          <div className="flex items-center gap-3">
-            <Link href="/" className="text-sm font-semibold uppercase tracking-[0.28em]">agent-me.app</Link>
-            <span className="hidden sm:inline text-xs uppercase tracking-[0.2em] text-muted">Chat</span>
-          </div>
-          <nav aria-label="Chat actions" className="flex items-center gap-3 text-xs uppercase tracking-[0.2em]">
+      <AppHeader
+        nav={
+          <>
             <button
               onClick={() => setShowApiKeyModal(true)}
               className="btn-secondary px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em]"
@@ -174,9 +171,9 @@ export default function ChatPage() {
               Profile
             </Link>
             <ThemeToggle />
-          </nav>
-        </div>
-      </header>
+          </>
+        }
+      />
 
       <div className="flex-1 mx-auto flex w-full max-w-6xl flex-col px-4 py-6 sm:px-6 lg:px-8">
         <div className="flex-1 overflow-y-auto space-y-4 border border-app p-4">

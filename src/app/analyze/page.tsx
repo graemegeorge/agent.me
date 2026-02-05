@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 import { ChatGPTExport, AnalysisProgress } from '@/types'
 import { analyzeChatHistory } from '@/lib/analyzer'
 import { ThemeToggle } from '@/components/theme/ThemeToggle'
+import { AppHeader } from '@/components/layout/AppHeader'
 import { ArrowRight, Upload } from 'lucide-react'
 
 export default function AnalyzePage() {
@@ -111,17 +112,16 @@ export default function AnalyzePage() {
 
   return (
     <main className="min-h-screen bg-app text-app">
-      <header className="rule-strong">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-6 sm:px-6 lg:px-8">
-          <Link href="/" className="text-sm font-semibold uppercase tracking-[0.28em]">agent-me.app</Link>
-          <nav aria-label="Analyze page" className="flex items-center gap-4 text-xs uppercase tracking-[0.2em]">
+      <AppHeader
+        nav={
+          <>
             <Link href="/questionnaire" className="hidden sm:inline hover:text-accent">Questionnaire</Link>
             <ThemeToggle />
-          </nav>
-        </div>
-      </header>
+          </>
+        }
+      />
 
-      <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
+      <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
         <div className="mb-10">
           <p className="micro text-muted">Chat history analysis</p>
           <h1 className="mt-4 text-3xl font-semibold tracking-tight sm:text-4xl">Upload your ChatGPT export.</h1>

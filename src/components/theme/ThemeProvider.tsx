@@ -17,9 +17,9 @@ function applyTheme(theme: ThemeMode): 'light' | 'dark' {
   const resolvedTheme = theme === 'system' ? getSystemTheme() : theme
   root.classList.remove('light', 'dark')
 
-  if (theme === 'light') {
+  if (resolvedTheme === 'light') {
     root.classList.add('light')
-  } else if (theme === 'dark') {
+  } else {
     root.classList.add('dark')
   }
 

@@ -7,6 +7,7 @@ import { AgentProfile } from '@/types'
 import { generateAgentMd, generateSkillsMd, generateSystemPromptMd } from '@/lib/generator'
 import JSZip from 'jszip'
 import { ThemeToggle } from '@/components/theme/ThemeToggle'
+import { AppHeader } from '@/components/layout/AppHeader'
 import {
   Bot,
   Brain,
@@ -143,16 +144,15 @@ export default function ProfilePage() {
 
   return (
     <main className="min-h-screen bg-app text-app">
-      <header className="rule-strong">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-6 sm:px-6 lg:px-8">
-          <Link href="/" className="text-sm font-semibold uppercase tracking-[0.28em]">agent-me.app</Link>
-          <nav aria-label="Profile actions" className="flex flex-wrap items-center gap-3 text-xs uppercase tracking-[0.2em]">
+      <AppHeader
+        nav={
+          <>
             <Link href="/chat" className="btn-primary px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em]">Chat</Link>
             <Link href="/" className="btn-secondary px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em]">New</Link>
             <ThemeToggle />
-          </nav>
-        </div>
-      </header>
+          </>
+        }
+      />
 
       <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
         <div className="mb-10">

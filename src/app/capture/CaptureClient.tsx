@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 import { generateProfileFromAuthData } from '@/lib/auth-capture'
 import { ThemeToggle } from '@/components/theme/ThemeToggle'
 import { UserCircle2, ArrowRight } from 'lucide-react'
+import { AppHeader } from '@/components/layout/AppHeader'
 
 interface CaptureClientProps {
   name?: string | null
@@ -40,17 +41,16 @@ export default function CaptureClient({ name, email, image, provider }: CaptureC
 
   return (
     <main className="min-h-screen bg-app text-app">
-      <header className="rule-strong">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-6 sm:px-6 lg:px-8">
-          <Link href="/" className="text-sm font-semibold uppercase tracking-[0.28em]">agent-me.app</Link>
-          <nav aria-label="Capture page" className="flex items-center gap-4 text-xs uppercase tracking-[0.2em]">
+      <AppHeader
+        nav={
+          <>
             <Link href="/analyze" className="hidden sm:inline hover:text-accent">Upload export</Link>
             <ThemeToggle />
-          </nav>
-        </div>
-      </header>
+          </>
+        }
+      />
 
-      <div className="mx-auto max-w-4xl space-y-8 px-4 py-12 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-6xl space-y-8 px-4 py-12 sm:px-6 lg:px-8">
         <div>
           <p className="micro text-muted">Connected capture</p>
           <h1 className="mt-4 text-3xl font-semibold tracking-tight sm:text-4xl">Review your connected account.</h1>
