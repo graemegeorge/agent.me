@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { generateProfileFromAuthData } from '@/lib/auth-capture'
 import { ThemeToggle } from '@/components/theme/ThemeToggle'
-import { UserCircle2 } from 'lucide-react'
+import { UserCircle2, ArrowRight } from 'lucide-react'
 
 interface CaptureClientProps {
   name?: string | null
@@ -40,60 +40,53 @@ export default function CaptureClient({ name, email, image, provider }: CaptureC
 
   return (
     <main className="min-h-screen bg-app text-app">
-      <header className="border-b border-gray-800">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-3 md:py-4 flex items-center justify-between">
-          <Link href="/" className="text-2xl font-bold brand-logo">
-            agent-me.app
-          </Link>
-          <nav aria-label="Capture page" className="flex items-center gap-2 md:gap-3">
-            <Link href="/analyze" className="hidden sm:inline text-gray-400 hover:text-white transition-colors">
-              Upload export instead →
-            </Link>
+      <header className="rule-strong">
+        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-6 sm:px-6 lg:px-8">
+          <Link href="/" className="text-sm font-semibold uppercase tracking-[0.28em]">agent-me.app</Link>
+          <nav aria-label="Capture page" className="flex items-center gap-4 text-xs uppercase tracking-[0.2em]">
+            <Link href="/analyze" className="hidden sm:inline hover:text-accent">Upload export</Link>
             <ThemeToggle />
           </nav>
         </div>
       </header>
 
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12 space-y-6 md:space-y-8">
-        <div className="text-center">
-          <h1 className="text-2xl md:text-4xl font-bold mb-3">
-            <span className="text-gradient-heading">
-              Connected Data Capture
-            </span>
-          </h1>
-          <p className="text-gray-400">
-            You are signed in. Review your account details, then generate your AI profile in one click.
+      <div className="mx-auto max-w-4xl space-y-8 px-4 py-12 sm:px-6 lg:px-8">
+        <div>
+          <p className="micro text-muted">Connected capture</p>
+          <h1 className="mt-4 text-3xl font-semibold tracking-tight sm:text-4xl">Review your connected account.</h1>
+          <p className="mt-4 text-base text-muted-strong">
+            Confirm the account details and generate an agent profile using connected metadata.
           </p>
         </div>
 
-        <div className="glass rounded-2xl p-6 border border-gray-800">
+        <div className="frame p-6">
           <div className="flex items-center gap-4">
             {image ? (
-              <img src={image} alt={name || 'User avatar'} className="w-16 h-16 rounded-full border border-gray-700" />
+              <img src={image} alt={name || 'User avatar'} className="h-14 w-14 border border-app object-cover" />
             ) : (
-              <div className="w-16 h-16 rounded-full bg-gray-800 border border-gray-700 flex items-center justify-center">
-                <UserCircle2 className="h-8 w-8 text-muted-strong" />
+              <div className="flex h-14 w-14 items-center justify-center border border-app">
+                <UserCircle2 className="h-6 w-6 text-muted-strong" />
               </div>
             )}
             <div>
-              <p className="text-sm text-gray-400">Signed in as</p>
-              <p className="text-xl font-semibold text-white">{name || 'Connected User'}</p>
-              <p className="text-gray-400">{email || 'No public email from provider'}</p>
+              <p className="text-xs uppercase tracking-[0.2em] text-muted">Signed in as</p>
+              <p className="text-lg font-semibold">{name || 'Connected User'}</p>
+              <p className="text-sm text-muted">{email || 'No public email from provider'}</p>
             </div>
           </div>
 
-          <div className="mt-6 grid sm:grid-cols-2 gap-4">
-            <div className="bg-gray-900/70 border border-gray-800 rounded-xl p-4">
-              <p className="text-sm text-gray-400 mb-1">Provider</p>
-              <p className="text-white font-medium">{providerLabel}</p>
+          <div className="mt-6 grid gap-4 sm:grid-cols-2">
+            <div className="frame p-4">
+              <p className="text-xs uppercase tracking-[0.2em] text-muted">Provider</p>
+              <p className="mt-2 text-sm font-semibold">{providerLabel}</p>
             </div>
-            <div className="bg-gray-900/70 border border-gray-800 rounded-xl p-4">
-              <p className="text-sm text-gray-400 mb-1">Account dashboard</p>
+            <div className="frame p-4">
+              <p className="text-xs uppercase tracking-[0.2em] text-muted">Account dashboard</p>
               <a
                 href={dashboardLink}
                 target="_blank"
                 rel="noreferrer"
-                className="text-primary-300 hover:text-primary-200 underline"
+                className="mt-2 inline-block text-sm text-accent hover:underline"
               >
                 Open {providerLabel} dashboard
               </a>
@@ -101,21 +94,19 @@ export default function CaptureClient({ name, email, image, provider }: CaptureC
           </div>
         </div>
 
-        <div className="glass rounded-2xl p-6 border border-primary-500/30 bg-primary-500/5">
-          <h2 className="text-xl font-semibold text-white mb-2">Magic Capture</h2>
-          <p className="text-gray-400 mb-5">
-            We will use your connected account metadata to generate a profile in the same format as questionnaire output.
+        <div className="frame p-6">
+          <h2 className="text-lg font-semibold">Magic Capture</h2>
+          <p className="mt-3 text-sm text-muted-strong">
+            We will use connected account metadata to generate a profile aligned with the questionnaire output.
           </p>
-          <div className="relative inline-block w-full sm:w-auto">
-            <div className="absolute -inset-1 bg-gradient-to-r from-sky-500 to-fuchsia-500 rounded-xl blur-lg opacity-60 transition-opacity" />
-            <button
-              onClick={handleGenerate}
-              disabled={isGenerating}
-              className="relative w-full sm:w-auto px-6 py-3 bg-gradient-to-r from-sky-500 to-fuchsia-500 text-white rounded-xl font-semibold hover:from-sky-600 hover:to-fuchsia-600 hover:scale-[1.02] transition-all disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:scale-100"
-            >
-              {isGenerating ? 'Generating profile...' : 'Generate AI Profile from Connected Data'}
-            </button>
-          </div>
+          <button
+            onClick={handleGenerate}
+            disabled={isGenerating}
+            className="btn-primary mt-6 inline-flex w-full items-center justify-center gap-2 px-6 py-3 text-xs font-semibold uppercase tracking-[0.22em] sm:w-auto disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {isGenerating ? 'Generating profile...' : 'Generate AI Profile'}
+            <ArrowRight className="h-4 w-4" />
+          </button>
         </div>
       </div>
     </main>

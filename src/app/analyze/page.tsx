@@ -3,9 +3,10 @@
 import { useState, useCallback, useRef } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { ChatGPTExport, AnalysisProgress, AgentProfile } from '@/types'
+import { ChatGPTExport, AnalysisProgress } from '@/types'
 import { analyzeChatHistory } from '@/lib/analyzer'
 import { ThemeToggle } from '@/components/theme/ThemeToggle'
+import { ArrowRight, Upload } from 'lucide-react'
 
 export default function AnalyzePage() {
   const router = useRouter()
@@ -13,7 +14,6 @@ export default function AnalyzePage() {
   const [file, setFile] = useState<File | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [progress, setProgress] = useState<AnalysisProgress | null>(null)
-  const [profile, setProfile] = useState<AgentProfile | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const handleDragOver = useCallback((e: React.DragEvent) => {
@@ -74,17 +74,15 @@ export default function AnalyzePage() {
       }
 
       if (!data.conversations && !Array.isArray(data)) {
-        setError('This doesn\'t look like a ChatGPT export. Please upload the conversations.json file from your ChatGPT data export.')
+        setError('This does not look like a ChatGPT export. Please upload the conversations.json file from your ChatGPT data export.')
         setProgress(null)
         return
       }
 
-      // Handle both formats (array or object with conversations property)
       const conversations = Array.isArray(data) ? data : data.conversations
 
       setProgress({ stage: 'analyzing', progress: 40, message: 'Analyzing your communication patterns...' })
 
-      // Simulate progress while analyzing
       const progressInterval = setInterval(() => {
         setProgress(prev => {
           if (!prev || prev.progress >= 90) return prev
@@ -95,13 +93,9 @@ export default function AnalyzePage() {
       const generatedProfile = await analyzeChatHistory({ conversations })
 
       clearInterval(progressInterval)
-      setProgress({ stage: 'complete', progress: 100, message: 'Analysis complete!' })
-      setProfile(generatedProfile)
-
-      // Store in localStorage for the profile page
+      setProgress({ stage: 'complete', progress: 100, message: 'Analysis complete.' })
       localStorage.setItem('agentProfile', JSON.stringify(generatedProfile))
 
-      // Navigate to profile page after a short delay
       setTimeout(() => {
         router.push('/profile')
       }, 1500)
@@ -117,47 +111,28 @@ export default function AnalyzePage() {
 
   return (
     <main className="min-h-screen bg-app text-app">
-      {/* Header */}
-      <header className="border-b border-gray-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 md:py-4">
-          <div className="flex items-center justify-between gap-3">
-            <Link href="/" className="text-2xl font-bold brand-logo">
-              agent-me.app
-            </Link>
-            <nav aria-label="Analyze page" className="flex items-center gap-2 md:gap-3">
-              <Link href="/questionnaire" className="hidden sm:inline text-gray-400 hover:text-white transition-colors">
-                Or take the questionnaire →
-              </Link>
-              <ThemeToggle />
-            </nav>
-          </div>
+      <header className="rule-strong">
+        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-6 sm:px-6 lg:px-8">
+          <Link href="/" className="text-sm font-semibold uppercase tracking-[0.28em]">agent-me.app</Link>
+          <nav aria-label="Analyze page" className="flex items-center gap-4 text-xs uppercase tracking-[0.2em]">
+            <Link href="/questionnaire" className="hidden sm:inline hover:text-accent">Questionnaire</Link>
+            <ThemeToggle />
+          </nav>
         </div>
       </header>
 
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-16">
-        <div className="text-center mb-8 md:mb-12">
-          <h1 className="text-3xl md:text-4xl font-bold mb-4">
-            <span className="text-gradient-heading">
-              Upload Your ChatGPT Export
-            </span>
-          </h1>
-          <p className="text-gray-400 text-lg">
-            We'll analyze your conversations to understand your unique patterns
+      <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
+        <div className="mb-10">
+          <p className="micro text-muted">Chat history analysis</p>
+          <h1 className="mt-4 text-3xl font-semibold tracking-tight sm:text-4xl">Upload your ChatGPT export.</h1>
+          <p className="mt-4 max-w-2xl text-base text-muted-strong sm:text-lg">
+            We map your language patterns and decision style to build the first draft of your AI twin.
           </p>
         </div>
 
-        {/* Upload Area */}
         {!progress && (
           <div
-            className={`
-              relative border-2 border-dashed rounded-2xl p-7 md:p-12 text-center
-              transition-all duration-300 cursor-pointer
-              ${isDragging
-                ? 'border-primary-500 bg-primary-500/10'
-                : 'border-gray-700 hover:border-gray-600 hover:bg-gray-900/50'
-              }
-              ${file ? 'border-green-500 bg-green-500/10' : ''}
-            `}
+            className={`frame p-8 text-center transition-colors ${isDragging ? 'border-strong' : ''}`}
             onDragOver={handleDragOver}
             onDragLeave={handleDragLeave}
             onDrop={handleDrop}
@@ -186,21 +161,19 @@ export default function AnalyzePage() {
 
             {file ? (
               <div className="space-y-4">
-                <div className="w-16 h-16 mx-auto bg-green-500/20 rounded-full flex items-center justify-center">
-                  <svg className="w-8 h-8 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
+                <div className="mx-auto flex h-12 w-12 items-center justify-center border border-strong">
+                  <Upload className="h-5 w-5" />
                 </div>
                 <div>
-                  <p className="text-white font-semibold">{file.name}</p>
-                  <p className="text-gray-400 text-sm">{(file.size / 1024 / 1024).toFixed(2)} MB</p>
+                  <p className="font-semibold">{file.name}</p>
+                  <p className="text-sm text-muted">{(file.size / 1024 / 1024).toFixed(2)} MB</p>
                 </div>
                 <button
                   onClick={(e) => {
                     e.stopPropagation()
                     setFile(null)
                   }}
-                  className="text-gray-400 hover:text-white text-sm underline"
+                  className="text-xs uppercase tracking-[0.2em] text-muted hover:text-accent"
                 >
                   Choose a different file
                 </button>
@@ -210,14 +183,12 @@ export default function AnalyzePage() {
               </div>
             ) : (
               <div className="space-y-4">
-                <div className="w-16 h-16 mx-auto bg-gray-800 rounded-full flex items-center justify-center">
-                  <svg className="w-8 h-8 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-                  </svg>
+                <div className="mx-auto flex h-12 w-12 items-center justify-center border border-app">
+                  <Upload className="h-5 w-5" />
                 </div>
                 <div>
-                  <p className="text-white font-semibold">Drop your conversations.json file here</p>
-                  <p id="upload-file-help" className="text-gray-400 text-sm">
+                  <p className="font-semibold">Drop your conversations.json file here</p>
+                  <p id="upload-file-help" className="text-sm text-muted">
                     or click, press Enter, or press Space to browse
                   </p>
                 </div>
@@ -226,106 +197,58 @@ export default function AnalyzePage() {
           </div>
         )}
 
-        {/* Progress */}
         {progress && (
-          <div className="space-y-6">
-            <div className="glass rounded-2xl p-8">
-              <div className="flex items-center gap-4 mb-6">
-                {progress.stage === 'complete' ? (
-                  <div className="w-12 h-12 bg-green-500/20 rounded-full flex items-center justify-center">
-                    <svg className="w-6 h-6 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                  </div>
-                ) : (
-                  <div className="w-12 h-12 bg-primary-500/20 rounded-full flex items-center justify-center">
-                    <svg className="w-6 h-6 text-primary-500 animate-spin" fill="none" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
-                    </svg>
-                  </div>
-                )}
-                <div>
-                  <p className="text-white font-semibold">{progress.message}</p>
-                  <p className="text-gray-400 text-sm">{progress.progress}% complete</p>
-                </div>
+          <div className="frame p-8">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="micro text-muted">Status</p>
+                <p className="mt-2 text-base font-semibold">{progress.message}</p>
               </div>
-
-              <div className="w-full bg-gray-800 rounded-full h-2">
-                <div
-                  className="bg-gradient-to-r from-primary-500 to-accent-500 h-2 rounded-full transition-all duration-500"
-                  style={{ width: `${progress.progress}%` }}
-                />
-              </div>
-
-              {progress.stage === 'complete' && (
-                <p className="text-center text-gray-400 mt-6">
-                  Redirecting to your profile...
-                </p>
-              )}
+              <span className="text-sm text-muted">{progress.progress}%</span>
             </div>
+            <div className="mt-6 border border-app">
+              <div
+                className="h-2 bg-app"
+                style={{ width: `${progress.progress}%`, backgroundColor: 'var(--color-text)' }}
+              />
+            </div>
+            {progress.stage === 'complete' && (
+              <p className="mt-6 text-sm text-muted">Redirecting to your profile...</p>
+            )}
           </div>
         )}
 
-        {/* Error Message */}
         {error && (
-          <div className="mt-6 p-4 bg-red-500/10 border border-red-500/20 rounded-xl">
-            <p className="text-red-400">{error}</p>
+          <div className="mt-6 frame border-strong p-4">
+            <p className="text-sm text-accent">{error}</p>
           </div>
         )}
 
-        {/* Analyze Button */}
         {file && !progress && (
           <button
             onClick={processFile}
-            className="w-full mt-6 py-4 px-8 bg-gradient-to-r from-primary-500 to-accent-500 text-white font-semibold rounded-xl hover:from-primary-600 hover:to-accent-600 transition-all duration-300"
+            className="btn-primary mt-6 inline-flex w-full items-center justify-center gap-2 px-6 py-3 text-sm font-semibold uppercase tracking-[0.22em] sm:w-auto"
           >
             Analyze My Conversations
+            <ArrowRight className="h-4 w-4" />
           </button>
         )}
 
-        {/* Instructions */}
-        <div className="mt-10 md:mt-12 glass rounded-2xl p-5 md:p-6">
-          <h3 className="text-lg font-semibold text-white mb-4">How to export your ChatGPT data:</h3>
-          <ol className="space-y-3 text-gray-400">
-            <li className="flex gap-3">
-              <span className="text-primary-400 font-semibold">1.</span>
-              Go to <a href="https://chat.openai.com" target="_blank" rel="noopener noreferrer" className="text-primary-400 hover:underline">chat.openai.com</a> and sign in
-            </li>
-            <li className="flex gap-3">
-              <span className="text-primary-400 font-semibold">2.</span>
-              Click your profile picture → Settings
-            </li>
-            <li className="flex gap-3">
-              <span className="text-primary-400 font-semibold">3.</span>
-              Go to "Data Controls" section
-            </li>
-            <li className="flex gap-3">
-              <span className="text-primary-400 font-semibold">4.</span>
-              Click "Export data" and confirm
-            </li>
-            <li className="flex gap-3">
-              <span className="text-primary-400 font-semibold">5.</span>
-              Wait for the email with your download link
-            </li>
-            <li className="flex gap-3">
-              <span className="text-primary-400 font-semibold">6.</span>
-              Extract the ZIP and upload <code className="text-accent-400">conversations.json</code>
-            </li>
+        <div className="mt-10 frame p-6">
+          <h3 className="text-sm font-semibold uppercase tracking-[0.2em]">How to export your ChatGPT data</h3>
+          <ol className="mt-4 space-y-3 text-sm text-muted-strong">
+            <li>Go to chat.openai.com and sign in.</li>
+            <li>Click your profile photo and open Settings.</li>
+            <li>Open Data Controls.</li>
+            <li>Choose Export data and confirm.</li>
+            <li>Download the ZIP, extract, upload conversations.json.</li>
           </ol>
         </div>
 
-        {/* Privacy Note */}
-        <div className="mt-6 p-4 bg-green-500/10 rounded-xl border border-green-500/30">
-          <div className="flex gap-3">
-            <svg className="w-5 h-5 text-green-600 dark:text-green-400 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-            </svg>
-            <div>
-              <p className="text-green-800 dark:text-green-300 font-semibold text-sm">Your privacy is protected</p>
-              <p className="text-green-700 dark:text-green-400 text-sm">All analysis happens in your browser. We don&apos;t store or transmit your conversations.</p>
-            </div>
-          </div>
+        <div className="mt-6 frame p-4">
+          <p className="text-sm text-muted-strong">
+            Privacy first: all analysis happens in your browser. We don&apos;t store or transmit your conversations.
+          </p>
         </div>
       </div>
     </main>

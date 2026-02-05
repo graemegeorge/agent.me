@@ -112,7 +112,9 @@ export default function ProfilePage() {
   if (!profile) {
     return (
       <main className="min-h-screen bg-app text-app flex items-center justify-center">
-        <div className="animate-spin w-8 h-8 border-2 border-primary-500 border-t-transparent rounded-full" />
+        <div className="frame p-6">
+          <p className="text-sm text-muted">Loading profile…</p>
+        </div>
       </main>
     )
   }
@@ -141,92 +143,49 @@ export default function ProfilePage() {
 
   return (
     <main className="min-h-screen bg-app text-app">
-      {/* Header */}
-      <header className="border-b border-gray-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex items-center justify-between">
-            <Link href="/" className="text-2xl font-bold brand-logo">
-              agent-me.app
-            </Link>
-            <nav aria-label="Profile actions" className="flex gap-2 md:gap-3 items-center">
-              <Link
-                href="/chat"
-                className="px-3 py-2 md:px-4 bg-gradient-to-r from-primary-500 to-accent-500 text-white rounded-lg font-semibold hover:from-primary-600 hover:to-accent-600 transition-all flex items-center gap-2 text-sm md:text-base"
-              >
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-                </svg>
-                <span className="hidden sm:inline">Chat with Agent</span>
-                <span className="sm:hidden">Chat</span>
-              </Link>
-              <Link href="/" className="px-3 py-2 md:px-4 bg-gray-800 text-white rounded-lg hover:bg-gray-700 transition-colors text-sm md:text-base">
-                <span className="hidden sm:inline">Create New</span>
-                <span className="sm:hidden">New</span>
-              </Link>
-              <ThemeToggle />
-            </nav>
-          </div>
+      <header className="rule-strong">
+        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-6 sm:px-6 lg:px-8">
+          <Link href="/" className="text-sm font-semibold uppercase tracking-[0.28em]">agent-me.app</Link>
+          <nav aria-label="Profile actions" className="flex flex-wrap items-center gap-3 text-xs uppercase tracking-[0.2em]">
+            <Link href="/chat" className="btn-primary px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em]">Chat</Link>
+            <Link href="/" className="btn-secondary px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em]">New</Link>
+            <ThemeToggle />
+          </nav>
         </div>
       </header>
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
-        {/* Profile Header */}
-        <div className="text-center mb-8">
-          <div className="relative inline-block mb-5 md:mb-6">
-            <div className="absolute inset-0 bg-gradient-to-r from-primary-500 to-accent-500 rounded-full blur-lg opacity-50" />
-            <div className="relative w-20 h-20 md:w-24 md:h-24 bg-gradient-to-r from-primary-500 to-accent-500 rounded-full flex items-center justify-center">
-              <Bot className="w-10 h-10 text-white" />
-            </div>
-          </div>
-          <h1 className="text-3xl md:text-4xl font-bold mb-2">
-            <span className="text-gradient-heading">
-              Your AI Agent is Ready!
-            </span>
-          </h1>
-          <p className="text-gray-400">
+      <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
+        <div className="mb-10">
+          <p className="micro text-muted">Profile</p>
+          <h1 className="mt-4 text-3xl font-semibold tracking-tight sm:text-4xl">Your AI agent is ready.</h1>
+          <p className="mt-4 text-sm text-muted-strong">
             Created {profile.createdAt instanceof Date ? profile.createdAt.toLocaleDateString() : new Date(profile.createdAt).toLocaleDateString()}
             {profile.analysis.totalMessages > 0 && ` • Based on ${profile.analysis.totalMessages.toLocaleString()} messages`}
           </p>
         </div>
 
-        {/* Quick Actions */}
-        <div className="flex flex-col sm:flex-row sm:flex-wrap justify-center gap-3 md:gap-4 mb-10 md:mb-12">
-          <Link
-            href="/chat"
-            className="flex w-full sm:w-auto items-center gap-3 px-4 py-3 md:px-6 md:py-4 bg-gradient-to-r from-primary-500/20 to-accent-500/20 border border-primary-500/30 rounded-xl hover:from-primary-500/30 hover:to-accent-500/30 transition-all"
-          >
-            <MessageCircle className="h-5 w-5 text-primary-300" />
-            <div className="text-left">
-              <p className="text-white font-semibold">Chat with Your Agent</p>
-              <p className="text-gray-400 text-sm">Test your AI twin in real-time</p>
-            </div>
-          </Link>
-
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           <button
             onClick={downloadAllAsZip}
-            className="flex w-full sm:w-auto items-center gap-3 px-4 py-3 md:px-6 md:py-4 bg-gray-800/50 border border-gray-700 rounded-xl hover:bg-gray-800 transition-all"
+            className="btn-secondary flex w-full items-center gap-3 px-4 py-3 text-xs font-semibold uppercase tracking-[0.2em] sm:w-auto"
           >
-            <Download className="h-5 w-5 text-primary-300" />
-            <div className="text-left">
-              <p className="text-white font-semibold">Download All Files</p>
-              <p className="text-gray-400 text-sm">Get AGENT.md, SKILLS.md & more</p>
-            </div>
+            <Download className="h-4 w-4" /> Download all files
           </button>
-
           <button
             onClick={copySystemPrompt}
-            className="flex w-full sm:w-auto items-center gap-3 px-4 py-3 md:px-6 md:py-4 bg-gray-800/50 border border-gray-700 rounded-xl hover:bg-gray-800 transition-all"
+            className="btn-secondary flex w-full items-center gap-3 px-4 py-3 text-xs font-semibold uppercase tracking-[0.2em] sm:w-auto"
           >
-            <ClipboardCopy className={`h-5 w-5 ${copied ? 'text-green-400' : 'text-primary-300'}`} />
-            <div className="text-left">
-              <p className="text-white font-semibold">{copied ? 'Copied!' : 'Copy System Prompt'}</p>
-              <p className="text-gray-400 text-sm">Use with ChatGPT or Claude</p>
-            </div>
+            <ClipboardCopy className="h-4 w-4" /> {copied ? 'Copied!' : 'Copy system prompt'}
           </button>
+          <Link
+            href="/chat"
+            className="btn-primary flex w-full items-center gap-3 px-4 py-3 text-xs font-semibold uppercase tracking-[0.2em] sm:w-auto"
+          >
+            <MessageCircle className="h-4 w-4" /> Chat with your agent
+          </Link>
         </div>
 
-        {/* Tabs */}
-        <div className="flex justify-center gap-2 md:gap-4 mb-6 md:mb-8" role="tablist" aria-label="Profile sections">
+        <div className="mt-10 flex flex-wrap gap-2" role="tablist" aria-label="Profile sections">
           {(['overview', 'personality', 'files'] as const).map((tab) => (
             <button
               id={tabId(tab)}
@@ -235,70 +194,56 @@ export default function ProfilePage() {
               role="tab"
               aria-selected={activeTab === tab}
               aria-controls={tabPanelId(tab)}
-              className={`
-                px-4 py-2.5 md:px-6 md:py-3 rounded-xl text-sm md:text-base font-semibold transition-all duration-200
-                ${activeTab === tab
-                  ? 'bg-gradient-to-r from-primary-500/20 to-accent-500/20 border border-primary-500 text-white'
-                  : 'text-gray-400 hover:text-white'
-                }
-              `}
+              className={`px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] ${activeTab === tab ? 'border border-strong' : 'border border-app text-muted'}`}
             >
-              {tab === 'files' ? 'Files & Export' : tab.charAt(0).toUpperCase() + tab.slice(1)}
+              {tab === 'files' ? 'Files & export' : tab.charAt(0).toUpperCase() + tab.slice(1)}
             </button>
           ))}
         </div>
 
-        {/* Overview Tab */}
         {activeTab === 'overview' && (
-          <div
-            id={tabPanelId('overview')}
-            role="tabpanel"
-            aria-labelledby={tabId('overview')}
-            className="grid md:grid-cols-2 gap-6"
-          >
-            {/* Personality Summary */}
-            <div className="glass rounded-2xl p-6">
-              <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-                <Target className="h-5 w-5 text-primary-300" /> Personality Traits
+          <div id={tabPanelId('overview')} role="tabpanel" aria-labelledby={tabId('overview')} className="mt-8 grid gap-6 md:grid-cols-2">
+            <div className="frame p-6">
+              <h3 className="text-sm font-semibold uppercase tracking-[0.2em] flex items-center gap-2">
+                <Target className="h-4 w-4" /> Personality traits
               </h3>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="mt-5 grid grid-cols-2 gap-4 text-sm">
                 {personalityTraits.map((trait) => {
                   const Icon = trait.icon
                   return (
-                    <div key={trait.label} className="bg-gray-800/50 rounded-xl p-4">
-                      <Icon className="h-5 w-5 mb-2 text-primary-300" />
-                      <p className="text-gray-400 text-sm">{trait.label}</p>
-                      <p className="text-white font-semibold capitalize">{trait.value}</p>
+                    <div key={trait.label} className="frame p-4">
+                      <Icon className="h-4 w-4" />
+                      <p className="mt-3 text-xs uppercase tracking-[0.2em] text-muted">{trait.label}</p>
+                      <p className="mt-2 font-semibold capitalize">{trait.value}</p>
                     </div>
                   )
                 })}
               </div>
             </div>
 
-            {/* Work Style */}
-            <div className="glass rounded-2xl p-6">
-              <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-                <Briefcase className="h-5 w-5 text-primary-300" /> Work Style
+            <div className="frame p-6">
+              <h3 className="text-sm font-semibold uppercase tracking-[0.2em] flex items-center gap-2">
+                <Briefcase className="h-4 w-4" /> Work style
               </h3>
-              <div className="space-y-4">
+              <div className="mt-5 space-y-4 text-sm">
                 {workTraits.map((trait) => {
                   const Icon = trait.icon
                   return (
-                    <div key={trait.label} className="flex items-center gap-4 bg-gray-800/50 rounded-xl p-4">
-                      <Icon className="h-5 w-5 text-primary-300" />
+                    <div key={trait.label} className="frame p-4 flex items-center gap-3">
+                      <Icon className="h-4 w-4" />
                       <div>
-                        <p className="text-gray-400 text-sm">{trait.label}</p>
-                        <p className="text-white font-semibold capitalize">{trait.value}</p>
+                        <p className="text-xs uppercase tracking-[0.2em] text-muted">{trait.label}</p>
+                        <p className="mt-1 font-semibold capitalize">{trait.value}</p>
                       </div>
                     </div>
                   )
                 })}
                 {profile.workStyle.preferredTools.length > 0 && (
-                  <div className="bg-gray-800/50 rounded-xl p-4">
-                    <p className="text-gray-400 text-sm mb-2">Preferred Tools</p>
-                    <div className="flex flex-wrap gap-2">
+                  <div className="frame p-4">
+                    <p className="text-xs uppercase tracking-[0.2em] text-muted">Preferred tools</p>
+                    <div className="mt-3 flex flex-wrap gap-2">
                       {profile.workStyle.preferredTools.map((tool) => (
-                        <span key={tool} className="px-3 py-1 bg-gradient-to-r from-primary-500/20 to-accent-500/20 border border-primary-500/30 rounded-full text-sm text-app">
+                        <span key={tool} className="border border-app px-3 py-1 text-xs uppercase tracking-[0.2em]">
                           {tool}
                         </span>
                       ))}
@@ -308,80 +253,61 @@ export default function ProfilePage() {
               </div>
             </div>
 
-            {/* Topics & Interests */}
-            <div className="glass rounded-2xl p-6">
-              <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-                <Palette className="h-5 w-5 text-primary-300" /> Topics & Interests
+            <div className="frame p-6">
+              <h3 className="text-sm font-semibold uppercase tracking-[0.2em] flex items-center gap-2">
+                <Palette className="h-4 w-4" /> Topics & interests
               </h3>
-              <div className="flex flex-wrap gap-2">
+              <div className="mt-4 flex flex-wrap gap-2">
                 {profile.interests.primaryTopics.map((topic) => (
-                  <span
-                    key={topic}
-                    className="px-4 py-2 bg-gradient-to-r from-primary-500/20 to-accent-500/20 border border-primary-500/30 rounded-xl text-white"
-                  >
+                  <span key={topic} className="border border-app px-3 py-1 text-xs uppercase tracking-[0.2em]">
                     {topic}
                   </span>
                 ))}
               </div>
             </div>
 
-            {/* Communication Style */}
-            <div className="glass rounded-2xl p-6">
-              <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-                <MessageCircle className="h-5 w-5 text-primary-300" /> Communication
+            <div className="frame p-6">
+              <h3 className="text-sm font-semibold uppercase tracking-[0.2em] flex items-center gap-2">
+                <MessageCircle className="h-4 w-4" /> Communication
               </h3>
-              <div className="space-y-3">
+              <div className="mt-4 space-y-3 text-sm">
                 <div className="flex items-center justify-between">
-                  <span className="text-gray-400">Message Length</span>
-                  <span className="text-white capitalize">{profile.communication.averageMessageLength}</span>
+                  <span className="text-muted">Message length</span>
+                  <span className="capitalize">{profile.communication.averageMessageLength}</span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-gray-400">Uses Emojis</span>
-                  <span className={profile.communication.usesEmojis ? 'text-green-400' : 'text-gray-500'}>
-                    {profile.communication.usesEmojis ? 'Yes' : 'No'}
-                  </span>
+                  <span className="text-muted">Uses emojis</span>
+                  <span>{profile.communication.usesEmojis ? 'Yes' : 'No'}</span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-gray-400">Uses Code Examples</span>
-                  <span className={profile.communication.usesCodeExamples ? 'text-green-400' : 'text-gray-500'}>
-                    {profile.communication.usesCodeExamples ? 'Yes' : 'No'}
-                  </span>
+                  <span className="text-muted">Uses code examples</span>
+                  <span>{profile.communication.usesCodeExamples ? 'Yes' : 'No'}</span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-gray-400">Asks Clarifying Questions</span>
-                  <span className={profile.communication.asksClarifyingQuestions ? 'text-green-400' : 'text-gray-500'}>
-                    {profile.communication.asksClarifyingQuestions ? 'Yes' : 'No'}
-                  </span>
+                  <span className="text-muted">Asks clarifying questions</span>
+                  <span>{profile.communication.asksClarifyingQuestions ? 'Yes' : 'No'}</span>
                 </div>
               </div>
             </div>
           </div>
         )}
 
-        {/* Personality Tab */}
         {activeTab === 'personality' && (
-          <div
-            id={tabPanelId('personality')}
-            role="tabpanel"
-            aria-labelledby={tabId('personality')}
-            className="glass rounded-2xl p-8"
-          >
-            <h3 className="text-xl font-semibold text-white mb-6">Detailed Personality Analysis</h3>
-
-            <div className="space-y-8">
+          <div id={tabPanelId('personality')} role="tabpanel" aria-labelledby={tabId('personality')} className="mt-8 frame p-8">
+            <h3 className="text-lg font-semibold">Detailed personality analysis</h3>
+            <div className="mt-6 space-y-6 text-sm text-muted-strong">
               <div>
-                <h4 className="text-lg font-semibold text-primary-400 mb-3">Communication Style</h4>
-                <p className="text-gray-300">
-                  You communicate in a <span className="text-white font-semibold">{profile.personality.communicationStyle}</span> manner
-                  with <span className="text-white font-semibold">{profile.personality.verbosity}</span> verbosity.
-                  Your overall tone is <span className="text-white font-semibold">{profile.personality.tone}</span>.
+                <p className="micro text-muted">Communication</p>
+                <p className="mt-2">
+                  You communicate in a <span className="font-semibold text-app">{profile.personality.communicationStyle}</span> manner with{' '}
+                  <span className="font-semibold text-app">{profile.personality.verbosity}</span> verbosity. Your overall tone is{' '}
+                  <span className="font-semibold text-app">{profile.personality.tone}</span>.
                 </p>
               </div>
-
               <div>
-                <h4 className="text-lg font-semibold text-accent-400 mb-3">Decision Making</h4>
-                <p className="text-gray-300">
-                  You tend to make decisions in an <span className="text-white font-semibold">{profile.personality.decisionMaking}</span> way,
+                <p className="micro text-muted">Decision making</p>
+                <p className="mt-2">
+                  You tend to make decisions in an <span className="font-semibold text-app">{profile.personality.decisionMaking}</span> way,
                   {profile.personality.decisionMaking === 'analytical'
                     ? ' relying on data and logical analysis to reach conclusions.'
                     : profile.personality.decisionMaking === 'intuitive'
@@ -389,24 +315,20 @@ export default function ProfilePage() {
                     : ' balancing both intuition and analysis.'}
                 </p>
               </div>
-
               <div>
-                <h4 className="text-lg font-semibold text-primary-400 mb-3">Work Approach</h4>
-                <p className="text-gray-300">
-                  Your problem-solving approach is <span className="text-white font-semibold">{profile.workStyle.problemSolvingApproach}</span>.
-                  You prefer <span className="text-white font-semibold">{profile.workStyle.learningStyle}</span> learning.
+                <p className="micro text-muted">Work approach</p>
+                <p className="mt-2">
+                  Your problem-solving approach is{' '}
+                  <span className="font-semibold text-app">{profile.workStyle.problemSolvingApproach}</span>. You prefer{' '}
+                  <span className="font-semibold text-app">{profile.workStyle.learningStyle}</span> learning.
                 </p>
               </div>
-
               {profile.analysis.topKeywords.length > 0 && (
                 <div>
-                  <h4 className="text-lg font-semibold text-accent-400 mb-3">Top Keywords</h4>
-                  <div className="flex flex-wrap gap-2">
+                  <p className="micro text-muted">Top keywords</p>
+                  <div className="mt-3 flex flex-wrap gap-2">
                     {profile.analysis.topKeywords.slice(0, 15).map((keyword) => (
-                      <span
-                        key={keyword}
-                        className="px-3 py-1 bg-gray-800 rounded-full text-sm text-gray-300"
-                      >
+                      <span key={keyword} className="border border-app px-3 py-1 text-xs uppercase tracking-[0.2em]">
                         {keyword}
                       </span>
                     ))}
@@ -417,47 +339,38 @@ export default function ProfilePage() {
           </div>
         )}
 
-        {/* Files Tab */}
         {activeTab === 'files' && (
-          <div
-            id={tabPanelId('files')}
-            role="tabpanel"
-            aria-labelledby={tabId('files')}
-            className="space-y-6"
-          >
-            {/* Download All */}
-            <div className="glass rounded-2xl p-6">
-              <div className="flex items-center justify-between">
+          <div id={tabPanelId('files')} role="tabpanel" aria-labelledby={tabId('files')} className="mt-8 space-y-6">
+            <div className="frame p-6">
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <div>
-                  <h3 className="text-xl font-semibold text-white mb-2">Download Complete Package</h3>
-                  <p className="text-gray-400">Get all files in a single ZIP archive</p>
+                  <h3 className="text-lg font-semibold">Download complete package</h3>
+                  <p className="mt-2 text-sm text-muted-strong">Get all files in a single ZIP archive.</p>
                 </div>
                 <button
                   onClick={downloadAllAsZip}
-                  className="px-4 py-2.5 md:px-6 md:py-3 bg-gradient-to-r from-primary-500 to-accent-500 text-white rounded-xl font-semibold hover:from-primary-600 hover:to-accent-600 transition-all flex items-center gap-2"
+                  className="btn-primary inline-flex w-full items-center justify-center gap-2 px-6 py-3 text-xs font-semibold uppercase tracking-[0.22em] sm:w-auto"
                 >
-                  <Download className="h-4 w-4 md:h-5 md:w-5" />
-                  Download ZIP
+                  <Download className="h-4 w-4" /> Download ZIP
                 </button>
               </div>
             </div>
 
-            {/* Individual Files */}
-            <div className="grid md:grid-cols-2 gap-4">
+            <div className="grid gap-4 md:grid-cols-2">
               {files.map((file) => {
                 const Icon = file.icon
                 return (
-                  <div key={file.name} className="glass rounded-xl p-5 flex items-center justify-between">
-                    <div className="flex items-center gap-4">
-                      <Icon className="h-6 w-6 text-primary-300" />
+                  <div key={file.name} className="frame p-5 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                    <div className="flex items-center gap-3">
+                      <Icon className="h-5 w-5" />
                       <div>
-                        <p className="text-white font-semibold">{file.name}</p>
-                        <p className="text-gray-400 text-sm">{file.description}</p>
+                        <p className="text-sm font-semibold uppercase tracking-[0.2em]">{file.name}</p>
+                        <p className="text-sm text-muted-strong">{file.description}</p>
                       </div>
                     </div>
                     <button
                       onClick={file.action}
-                      className="px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-700 transition-colors"
+                      className="btn-secondary w-full px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] sm:w-auto"
                     >
                       Download
                     </button>
@@ -466,47 +379,37 @@ export default function ProfilePage() {
               })}
             </div>
 
-            {/* System Prompt Preview */}
-            <div className="glass rounded-2xl p-6">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-semibold text-white">System Prompt Preview</h3>
+            <div className="frame p-6">
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <h3 className="text-sm font-semibold uppercase tracking-[0.2em]">System prompt preview</h3>
                 <button
                   onClick={copySystemPrompt}
-                  className={`px-4 py-2 rounded-lg font-semibold transition-all duration-200 flex items-center gap-2 ${
-                    copied ? 'bg-green-500/20 text-green-400' : 'bg-gray-800 text-white hover:bg-gray-700'
-                  }`}
+                  className={`btn-secondary w-full px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] sm:w-auto ${copied ? 'border-strong' : ''}`}
                 >
-                  {copied ? 'Copied!' : 'Copy'}
+                  {copied ? 'Copied' : 'Copy'}
                 </button>
               </div>
-              <div className="bg-gray-900 rounded-xl p-4 overflow-auto max-h-[300px]">
-                <pre className="text-gray-300 whitespace-pre-wrap text-sm font-mono">
+              <div className="mt-4 border border-app bg-surface-strong p-4 text-xs">
+                <pre className="whitespace-pre-wrap font-mono text-muted-strong">
                   {profile.systemPrompt}
                 </pre>
               </div>
             </div>
 
-            {/* Usage Instructions */}
-            <div className="glass rounded-2xl p-6">
-              <h3 className="text-lg font-semibold text-white mb-4">How to Use Your Agent</h3>
-              <div className="grid md:grid-cols-3 gap-4">
-                <div className="bg-gray-800/50 rounded-xl p-4">
-                  <h4 className="text-primary-400 font-semibold mb-2">ChatGPT</h4>
-                  <p className="text-gray-400 text-sm">
-                    Go to Settings → Personalization → Custom Instructions and paste the system prompt.
-                  </p>
+            <div className="frame p-6">
+              <h3 className="text-sm font-semibold uppercase tracking-[0.2em]">How to use your agent</h3>
+              <div className="mt-4 grid gap-4 md:grid-cols-3 text-sm text-muted-strong">
+                <div className="frame p-4">
+                  <p className="micro text-muted">ChatGPT</p>
+                  <p className="mt-2">Settings → Personalization → Custom Instructions.</p>
                 </div>
-                <div className="bg-gray-800/50 rounded-xl p-4">
-                  <h4 className="text-accent-400 font-semibold mb-2">Claude</h4>
-                  <p className="text-gray-400 text-sm">
-                    Create a Project and add the system prompt to Project Instructions.
-                  </p>
+                <div className="frame p-4">
+                  <p className="micro text-muted">Claude</p>
+                  <p className="mt-2">Create a Project and add the system prompt to Project Instructions.</p>
                 </div>
-                <div className="bg-gray-800/50 rounded-xl p-4">
-                  <h4 className="text-primary-400 font-semibold mb-2">API</h4>
-                  <p className="text-gray-400 text-sm">
-                    Use as the system message in your OpenAI or Anthropic API calls.
-                  </p>
+                <div className="frame p-4">
+                  <p className="micro text-muted">API</p>
+                  <p className="mt-2">Use as the system message in OpenAI or Anthropic calls.</p>
                 </div>
               </div>
             </div>

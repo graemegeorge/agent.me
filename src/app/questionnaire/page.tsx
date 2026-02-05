@@ -3,9 +3,10 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { QuestionnaireResponse, AgentProfile } from '@/types'
+import { QuestionnaireResponse } from '@/types'
 import { generateProfileFromQuestionnaire } from '@/lib/questionnaire'
 import { ThemeToggle } from '@/components/theme/ThemeToggle'
+import { ArrowRight } from 'lucide-react'
 
 interface Question {
   id: keyof QuestionnaireResponse
@@ -24,7 +25,7 @@ const questions: Question[] = [
   },
   {
     id: 'primaryTasks',
-    question: 'What are your main day-to-day tasks?',
+    question: 'What are your main day-to-day tasks? (Select all that apply)',
     type: 'multiselect',
     options: [
       'Writing code',
@@ -65,7 +66,7 @@ const questions: Question[] = [
   },
   {
     id: 'toolsUsed',
-    question: 'What tools and technologies do you use regularly?',
+    question: 'What tools and technologies do you use regularly? (Select all that apply)',
     type: 'multiselect',
     options: [
       'JavaScript/TypeScript',
@@ -204,7 +205,6 @@ export default function QuestionnairePage() {
     if (currentQuestion < questions.length - 1) {
       setCurrentQuestion(currentQuestion + 1)
     } else {
-      // Generate profile
       setIsGenerating(true)
       try {
         const profile = await generateProfileFromQuestionnaire(responses as QuestionnaireResponse)
@@ -226,15 +226,10 @@ export default function QuestionnairePage() {
   if (isGenerating) {
     return (
       <main className="min-h-screen bg-app text-app flex items-center justify-center px-4">
-        <div className="text-center">
-          <div className="w-16 h-16 mx-auto mb-6 bg-primary-500/20 rounded-full flex items-center justify-center">
-            <svg className="w-8 h-8 text-primary-500 animate-spin" fill="none" viewBox="0 0 24 24">
-              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
-            </svg>
-          </div>
-          <h2 className="text-xl md:text-2xl font-bold text-white mb-2">Creating Your AI Agent</h2>
-          <p className="text-gray-400">Analyzing your responses...</p>
+        <div className="frame p-8 text-center">
+          <p className="micro text-muted">Generating</p>
+          <h2 className="mt-3 text-xl font-semibold">Creating your AI agent.</h2>
+          <p className="mt-3 text-sm text-muted-strong">Analyzing your responses...</p>
         </div>
       </main>
     )
@@ -242,79 +237,60 @@ export default function QuestionnairePage() {
 
   return (
     <main className="min-h-screen bg-app text-app">
-      {/* Header */}
-      <header className="border-b border-gray-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 md:py-4">
-          <div className="flex items-center justify-between gap-3">
-            <Link href="/" className="text-2xl font-bold brand-logo">
-              agent-me.app
-            </Link>
-            <nav aria-label="Questionnaire page" className="flex items-center gap-2 md:gap-3">
-              <Link href="/analyze" className="hidden sm:inline text-gray-400 hover:text-white transition-colors">
-                Or upload ChatGPT export →
-              </Link>
-              <ThemeToggle />
-            </nav>
-          </div>
+      <header className="rule-strong">
+        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-6 sm:px-6 lg:px-8">
+          <Link href="/" className="text-sm font-semibold uppercase tracking-[0.28em]">agent-me.app</Link>
+          <nav aria-label="Questionnaire page" className="flex items-center gap-4 text-xs uppercase tracking-[0.2em]">
+            <Link href="/analyze" className="hidden sm:inline hover:text-accent">Upload export</Link>
+            <ThemeToggle />
+          </nav>
         </div>
       </header>
 
-      {/* Progress Bar */}
-      <div className="max-w-2xl mx-auto px-4 pt-6 md:pt-8">
-        <div className="flex items-center justify-between mb-2">
-          <span className="text-sm text-gray-400">Question {currentQuestion + 1} of {questions.length}</span>
-          <span className="text-sm text-gray-400">{Math.round(progress)}% complete</span>
+      <div className="mx-auto max-w-3xl px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
+        <div className="mb-8">
+          <div className="flex items-center justify-between text-xs uppercase tracking-[0.2em] text-muted">
+            <span>Question {currentQuestion + 1} of {questions.length}</span>
+            <span>{Math.round(progress)}% complete</span>
+          </div>
+          <div className="mt-3 border border-app">
+            <div className="h-2" style={{ width: `${progress}%`, backgroundColor: 'var(--color-text)' }} />
+          </div>
         </div>
-        <div className="w-full bg-gray-800 rounded-full h-2">
-          <div
-            className="bg-gradient-to-r from-primary-500 to-accent-500 h-2 rounded-full transition-all duration-500"
-            style={{ width: `${progress}%` }}
-          />
-        </div>
-      </div>
 
-      {/* Question */}
-      <div className="max-w-2xl mx-auto px-4 py-8 md:py-16">
-        <div className="glass rounded-2xl p-5 md:p-8">
-          <h2 className="text-xl md:text-2xl font-bold text-white mb-6 md:mb-8">{question.question}</h2>
+        <div className="frame p-6 md:p-8">
+          <h2 className="text-xl font-semibold sm:text-2xl">{question.question}</h2>
 
-          {/* Text Input */}
           {question.type === 'text' && (
             <>
-              <label htmlFor={questionInputId} className="sr-only">
-                {question.question}
-              </label>
+              <label htmlFor={questionInputId} className="sr-only">{question.question}</label>
               <input
                 id={questionInputId}
                 type="text"
                 value={(responses[question.id] as string) || ''}
                 onChange={(e) => handleTextInput(e.target.value)}
                 placeholder={question.placeholder}
-                className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-primary-500 transition-colors"
+                className="mt-6 w-full border border-strong bg-app px-4 py-3 text-sm focus:outline-none"
               />
             </>
           )}
 
-          {/* Textarea */}
           {question.type === 'textarea' && (
             <>
-              <label htmlFor={questionInputId} className="sr-only">
-                {question.question}
-              </label>
+              <label htmlFor={questionInputId} className="sr-only">{question.question}</label>
               <textarea
                 id={questionInputId}
                 value={(responses[question.id] as string) || ''}
                 onChange={(e) => handleTextInput(e.target.value)}
                 placeholder={question.placeholder}
                 rows={4}
-                className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-primary-500 transition-colors resize-none"
+                className="mt-6 w-full border border-strong bg-app px-4 py-3 text-sm focus:outline-none"
               />
             </>
           )}
 
-          {/* Select */}
           {question.type === 'select' && (
-            <div className="space-y-3" role="radiogroup" aria-label={question.question}>
+            <div className="mt-6 space-y-3" role="radiogroup" aria-label={question.question}>
               {question.options?.map((option) => (
                 <button
                   type="button"
@@ -322,14 +298,7 @@ export default function QuestionnairePage() {
                   onClick={() => handleSelectInput(option)}
                   role="radio"
                   aria-checked={responses[question.id] === option}
-                  className={`
-                    w-full px-4 py-3 rounded-xl text-left transition-all duration-200
-                    ${responses[question.id] === option
-                      ? 'bg-gradient-to-r from-primary-500/20 to-accent-500/20 border-primary-500 text-white'
-                      : 'bg-gray-800 border-gray-700 text-gray-300 hover:bg-gray-700'
-                    }
-                    border
-                  `}
+                  className={`frame w-full px-4 py-3 text-left text-sm ${responses[question.id] === option ? 'border-strong' : ''}`}
                 >
                   {option}
                 </button>
@@ -337,9 +306,8 @@ export default function QuestionnairePage() {
             </div>
           )}
 
-          {/* Multi-select */}
           {question.type === 'multiselect' && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3" role="group" aria-label={question.question}>
+            <div className="mt-6 grid gap-3 sm:grid-cols-2" role="group" aria-label={question.question}>
               {question.options?.map((option) => {
                 const selected = ((responses[question.id] as string[]) || []).includes(option)
                 return (
@@ -348,23 +316,9 @@ export default function QuestionnairePage() {
                     key={option}
                     onClick={() => handleMultiSelectInput(option)}
                     aria-pressed={selected}
-                    className={`
-                      px-4 py-3 rounded-xl text-left transition-all duration-200
-                      ${selected
-                        ? 'bg-gradient-to-r from-primary-500/20 to-accent-500/20 border-primary-500 text-white'
-                        : 'bg-gray-800 border-gray-700 text-gray-300 hover:bg-gray-700'
-                      }
-                      border text-sm
-                    `}
+                    className={`frame px-4 py-3 text-left text-sm ${selected ? 'border-strong' : ''}`}
                   >
-                    <span className="flex items-center gap-2">
-                      {selected && (
-                        <svg className="w-4 h-4 text-primary-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                        </svg>
-                      )}
-                      {option}
-                    </span>
+                    {option}
                   </button>
                 )
               })}
@@ -372,34 +326,22 @@ export default function QuestionnairePage() {
           )}
         </div>
 
-        {/* Navigation */}
-        <div className="flex justify-between mt-6 md:mt-8">
+        <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <button
             onClick={handleBack}
             disabled={currentQuestion === 0}
-            className={`
-              px-4 py-2.5 md:px-6 md:py-3 rounded-xl font-semibold transition-all duration-200
-              ${currentQuestion === 0
-                ? 'text-gray-600 cursor-not-allowed'
-                : 'text-gray-400 hover:text-white'
-              }
-            `}
+            className={`btn-secondary inline-flex w-full items-center justify-center gap-2 px-6 py-3 text-xs font-semibold uppercase tracking-[0.22em] sm:w-auto ${currentQuestion === 0 ? 'opacity-40 cursor-not-allowed' : ''}`}
           >
-            ← Back
+            Back
           </button>
 
           <button
             onClick={handleNext}
             disabled={!canProceed()}
-            className={`
-              px-5 py-2.5 md:px-8 md:py-3 rounded-xl font-semibold transition-all duration-200
-              ${canProceed()
-                ? 'bg-gradient-to-r from-primary-500 to-accent-500 text-white hover:from-primary-600 hover:to-accent-600'
-                : 'bg-gray-800 text-gray-600 cursor-not-allowed'
-              }
-            `}
+            className={`btn-primary inline-flex w-full items-center justify-center gap-2 px-6 py-3 text-xs font-semibold uppercase tracking-[0.22em] sm:w-auto ${!canProceed() ? 'opacity-40 cursor-not-allowed' : ''}`}
           >
-            {currentQuestion === questions.length - 1 ? 'Generate Agent' : 'Next →'}
+            {currentQuestion === questions.length - 1 ? 'Generate Agent' : 'Next'}
+            <ArrowRight className="h-4 w-4" />
           </button>
         </div>
       </div>
