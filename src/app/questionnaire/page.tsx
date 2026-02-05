@@ -7,6 +7,7 @@ import { QuestionnaireResponse } from '@/types'
 import { generateProfileFromQuestionnaire } from '@/lib/questionnaire'
 import { ThemeToggle } from '@/components/theme/ThemeToggle'
 import { ArrowRight } from 'lucide-react'
+import { AppHeader } from '@/components/layout/AppHeader'
 
 interface Question {
   id: keyof QuestionnaireResponse
@@ -237,17 +238,17 @@ export default function QuestionnairePage() {
 
   return (
     <main className="min-h-screen bg-app text-app">
-      <header className="rule-strong">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-6 sm:px-6 lg:px-8">
-          <Link href="/" className="text-sm font-semibold uppercase tracking-[0.28em]">agent-me.app</Link>
-          <nav aria-label="Questionnaire page" className="flex items-center gap-4 text-xs uppercase tracking-[0.2em]">
+      <AppHeader
+        nav={
+          <>
             <Link href="/analyze" className="hidden sm:inline hover:text-accent">Upload export</Link>
             <ThemeToggle />
-          </nav>
-        </div>
-      </header>
+          </>
+        }
+      />
 
-      <div className="mx-auto max-w-3xl px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
+      <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
+        <div className="mx-auto max-w-3xl">
         <div className="mb-8">
           <div className="flex items-center justify-between text-xs uppercase tracking-[0.2em] text-muted">
             <span>Question {currentQuestion + 1} of {questions.length}</span>
@@ -343,6 +344,7 @@ export default function QuestionnairePage() {
             {currentQuestion === questions.length - 1 ? 'Generate Agent' : 'Next'}
             <ArrowRight className="h-4 w-4" />
           </button>
+        </div>
         </div>
       </div>
     </main>

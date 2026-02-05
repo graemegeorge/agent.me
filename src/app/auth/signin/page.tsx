@@ -3,14 +3,14 @@
 import { signIn } from 'next-auth/react'
 import Link from 'next/link'
 import { ThemeToggle } from '@/components/theme/ThemeToggle'
+import { AppHeader } from '@/components/layout/AppHeader'
 
 export default function SignInPage() {
   return (
-    <main className="min-h-screen bg-app text-app flex items-center justify-center px-4">
-      <div className="fixed right-4 top-4 z-50">
-        <ThemeToggle />
-      </div>
-      <div className="w-full max-w-md">
+    <main className="min-h-screen bg-app text-app">
+      <AppHeader nav={<ThemeToggle />} />
+      <div className="mx-auto flex min-h-[calc(100vh-72px)] max-w-6xl items-center justify-center px-4 py-10 sm:px-6 lg:px-8">
+        <div className="w-full max-w-md">
         <div className="mb-8">
           <p className="micro text-muted">Sign in</p>
           <Link href="/" className="mt-3 inline-block text-sm font-semibold uppercase tracking-[0.28em]">
@@ -69,6 +69,7 @@ export default function SignInPage() {
         <p className="mt-6 text-center text-xs text-muted">
           By signing in, you agree to our terms of service and privacy policy.
         </p>
+        </div>
       </div>
     </main>
   )
