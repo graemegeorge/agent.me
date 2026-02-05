@@ -305,7 +305,7 @@ export default function Home() {
             <span className="text-gradient-brand text-2xl font-bold">agent-me.app</span>
             <p className="text-sm text-muted">Built with privacy in mind. Your data stays yours.</p>
             <a
-              href="https://github.com/graemegeorge/agent-me.app"
+              href="https://github.com/graemegeorge/agent.me"
               target="_blank"
               rel="noreferrer"
               aria-label="View the agent-me.app repository on GitHub"
