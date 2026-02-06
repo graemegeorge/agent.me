@@ -6,7 +6,7 @@ interface AppHeaderProps {
 
 export function AppHeader({ nav }: AppHeaderProps) {
   return (
-    <header className="rule-strong">
+    <header className="hidden sm:block rule-strong">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:h-[72px] sm:px-6 lg:px-8">
         <Link href="/" className="text-sm font-semibold uppercase tracking-[0.28em]">
           agent-me.app
